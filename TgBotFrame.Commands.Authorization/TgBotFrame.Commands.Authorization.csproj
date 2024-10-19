@@ -32,10 +32,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore"/>
 		<PackageReference Include="TgBotFrame.Commands" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\TgBotFrame.Data\TgBotFrame.Data.csproj" />
+		<PackageReference Include="TgBotFrame.Data" />
 	</ItemGroup>
 
 	<ItemGroup>

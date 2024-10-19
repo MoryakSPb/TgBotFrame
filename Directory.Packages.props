@@ -6,6 +6,7 @@
 	  <PackageVersion Include="Telegram.Bot" Version="21.11.0" />
 	  <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
 	  <PackageVersion Include="TgBotFrame" Version="1.0.0" />
+	  <PackageVersion Include="TgBotFrame.Data" Version="1.0.0" />
 	  <PackageVersion Include="TgBotFrame.Commands" Version="1.0.0" />
 	  <PackageVersion Include="TgBotFrame.Commands.Authorization" Version="1.0.0" />
 	  <PackageVersion Include="TgBotFrame.Commands.Help" Version="1.0.0" />

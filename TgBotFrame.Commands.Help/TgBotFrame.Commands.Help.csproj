@@ -31,11 +31,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="TgBotFrame.Commands" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		<ProjectReference Include="..\TgBotFrame.Commands.Authorization\TgBotFrame.Commands.Authorization.csproj" />
+		<PackageReference Include="TgBotFrame.Commands.Authorization" />
 	</ItemGroup>
 
 	<ItemGroup>

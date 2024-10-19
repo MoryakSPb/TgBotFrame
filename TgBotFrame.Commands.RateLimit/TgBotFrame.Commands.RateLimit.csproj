@@ -34,9 +34,4 @@
 		<PackageReference Include="TgBotFrame.Commands" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-		<ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
-	</ItemGroup>
-
 </Project>
