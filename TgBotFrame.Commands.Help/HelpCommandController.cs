@@ -10,6 +10,7 @@ using TgBotFrame.Commands.Extensions;
 using TgBotFrame.Commands.Help.Extensions;
 using TgBotFrame.Commands.Help.Properties;
 using TgBotFrame.Commands.Services;
+using static TgBotFrame.Commands.Help.Extensions.ResourcesExtensions;
 
 namespace TgBotFrame.Commands.Help;
 
@@ -51,7 +52,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpSyntax_Title),
                 Context.GetCultureInfo())!,
             Context.GetThreadId(),
-            ParseMode.None,
+            ParseMode.MarkdownV2,
             []
         ).ConfigureAwait(false);
     }
@@ -78,7 +79,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                         nameof(HelpCommandController_HelpList_WithoutCategory),
                         Context.GetCultureInfo())!;
                 else if (x.Item1 is not null)
-                    displayName = x.Item1.GetString(ResourcesExtensions.CATEGORY_NAME_PREFIX + x.CategoryKey,
+                    displayName = x.Item1.GetString(CATEGORY_NAME_PREFIX + x.CategoryKey,
                         Context.GetCultureInfo()) ?? throw new KeyNotFoundException();
                 else throw new InvalidOperationException();
 
@@ -130,7 +131,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 nameof(HelpCommandController_HelpCategory_NoCategory),
                 Context.GetCultureInfo())
             : GetResourceManager(commands.assembly)?.GetString(
-                ResourcesExtensions.CATEGORY_DESCRIPTION_PREFIX + category,
+                CATEGORY_DESCRIPTION_PREFIX + category,
                 Context.GetCultureInfo())) ?? throw new KeyNotFoundException();
 
         await botClient.SendTextMessageAsync(
@@ -180,7 +181,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         text.AppendLine();
         text.AppendLine();
 
-        text.Append(resourceManager?.GetString(ResourcesExtensions.COMMAND_DESCRIPTION_PREFIX + command,
+        text.Append(resourceManager?.GetString(COMMAND_DESCRIPTION_PREFIX + command,
             Context.GetCultureInfo()));
 
         await botClient.SendTextMessageAsync(
@@ -190,15 +191,5 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             ParseMode.None,
             [],
             replyMarkup: null).ConfigureAwait(false);
-    }
-
-    private static ResourceManager? GetResourceManager(Assembly? source)
-    {
-        Type[]? types = source?.GetExportedTypes();
-        Type? resourcesType = types?.FirstOrDefault(x => x.Name == nameof(Resources));
-        PropertyInfo? property = resourcesType?.GetProperty(
-            "ResourceManager",
-            BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Static);
-        return (ResourceManager?)property?.GetMethod?.Invoke(null, []);
     }
 }
