@@ -30,8 +30,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Threading.RateLimiting"/>
-		<PackageReference Include="TgBotFrame.Commands" />
+		<PackageReference Include="System.Threading.RateLimiting" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
 	</ItemGroup>
 
 </Project>

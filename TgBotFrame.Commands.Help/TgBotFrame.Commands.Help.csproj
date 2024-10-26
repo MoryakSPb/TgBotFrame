@@ -30,8 +30,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TgBotFrame.Commands" />
-		<PackageReference Include="TgBotFrame.Commands.Authorization" />
+	  <ProjectReference Include="..\TgBotFrame.Commands.Authorization\TgBotFrame.Commands.Authorization.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

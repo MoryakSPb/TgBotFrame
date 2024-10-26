@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TgBotFrame.Commands" />
+	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

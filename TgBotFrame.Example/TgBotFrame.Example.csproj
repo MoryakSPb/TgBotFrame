@@ -19,9 +19,16 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
 		<PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-beta.2" />
 		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
-		<PackageReference Include="TgBotFrame.Commands.RateLimit" Version="1.0.0" />
-		<PackageReference Include="TgBotFrame.Commands.Start" Version="1.0.0" />
-		<PackageReference Include="TgBotFrame.Commands.Help" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\TgBotFrame.Commands.Authorization\TgBotFrame.Commands.Authorization.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Commands.Help\TgBotFrame.Commands.Help.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Commands.RateLimit\TgBotFrame.Commands.RateLimit.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Commands.Start\TgBotFrame.Commands.Start.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
+	  <ProjectReference Include="..\TgBotFrame.Data\TgBotFrame.Data.csproj" />
+	  <ProjectReference Include="..\TgBotFrame\TgBotFrame.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
