@@ -115,20 +115,11 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Отвечаем списком заблокированных пользователей. Указав параметром идентификатор пользователя, бот отвечает подробностями блокировки.
-        /// </summary>
-        public static string Category_Description_BanInfo {
-            get {
-                return ResourceManager.GetString("Category_Description_BanInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Данные команды позволяют управлять блокировками пользователей.
         /// </summary>
-        public static string Category_Description_Bans {
+        public static string Category_Description_Ban {
             get {
-                return ResourceManager.GetString("Category_Description_Bans", resourceCulture);
+                return ResourceManager.GetString("Category_Description_Ban", resourceCulture);
             }
         }
         
@@ -144,9 +135,9 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Блокировки.
         /// </summary>
-        public static string Category_Name_Bans {
+        public static string Category_Name_Ban {
             get {
-                return ResourceManager.GetString("Category_Name_Bans", resourceCulture);
+                return ResourceManager.GetString("Category_Name_Ban", resourceCulture);
             }
         }
         
@@ -170,11 +161,20 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Блокирует пользователя внутри бота, не позволяя ему исполнять команды. Различные варианты команды предполагают, что числом является идентификатор пользователя, интервалом — длительность блокировки, а текст — описание причины блокировки для администраторов.
+        ///   Ищет локализованную строку, похожую на Блокирует пользователя внутри бота, не позволяя ему исполнять команды. Различные варианты команды предполагают, что целым является идентификатор пользователя, длительность — время блокировки, а текст — описание причины блокировки для администраторов. Если время блокировки не указано, считается, что блокировка вечная..
         /// </summary>
         public static string Command_Description_Ban {
             get {
                 return ResourceManager.GetString("Command_Description_Ban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отвечает списком заблокированных пользователей. Указав целым параметром идентификатор пользователя, бот отвечает подробностями блокировки.
+        /// </summary>
+        public static string Command_Description_BanInfo {
+            get {
+                return ResourceManager.GetString("Command_Description_BanInfo", resourceCulture);
             }
         }
         
