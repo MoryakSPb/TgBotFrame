@@ -7,7 +7,6 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TgBotFrame.Commands.Attributes;
 using TgBotFrame.Commands.Extensions;
-using TgBotFrame.Commands.Help.Extensions;
 using TgBotFrame.Commands.Help.Properties;
 using TgBotFrame.Commands.Services;
 using static TgBotFrame.Commands.Help.Extensions.ResourcesExtensions;
