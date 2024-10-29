@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TgBotFrame.Commands.Authorization.Imterfaces;
+using TgBotFrame.Commands.Authorization.Interfaces;
 using TgBotFrame.Commands.Authorization.Models;
 
 namespace TgBotFrame.Example;
@@ -9,7 +9,11 @@ public class ExampleDataContext(DbContextOptions<ExampleDataContext> options)
 {
     public DbSet<DbRole> Roles { get; set; } = null!;
     public DbSet<DbRoleMember> RoleMembers { get; set; } = null!;
-    public Task SaveChangesAsync() => base.SaveChangesAsync();
+    public DbSet<DbBan> Bans { get; set; } = null!;
+    public DbSet<DbUser> Users { get; set; } = null!;
+
+    Task IAuthorizationData.SaveChangesAsync(CancellationToken cancellationToken) =>
+        base.SaveChangesAsync(cancellationToken);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
