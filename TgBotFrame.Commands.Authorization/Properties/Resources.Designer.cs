@@ -115,11 +115,38 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Отвечаем списком заблокированных пользователей. Указав параметром идентификатор пользователя, бот отвечает подробностями блокировки.
+        /// </summary>
+        public static string Category_Description_BanInfo {
+            get {
+                return ResourceManager.GetString("Category_Description_BanInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Данные команды позволяют управлять блокировками пользователей.
+        /// </summary>
+        public static string Category_Description_Bans {
+            get {
+                return ResourceManager.GetString("Category_Description_Bans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Данные команды позволяют управлять ролями, а также производить некоторые действия с их участниками, например, упоминать их.
         /// </summary>
         public static string Category_Description_Roles {
             get {
                 return ResourceManager.GetString("Category_Description_Roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Блокировки.
+        /// </summary>
+        public static string Category_Name_Bans {
+            get {
+                return ResourceManager.GetString("Category_Name_Bans", resourceCulture);
             }
         }
         
@@ -143,6 +170,15 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Блокирует пользователя внутри бота, не позволяя ему исполнять команды. Различные варианты команды предполагают, что числом является идентификатор пользователя, интервалом — длительность блокировки, а текст — описание причины блокировки для администраторов.
+        /// </summary>
+        public static string Command_Description_Ban {
+            get {
+                return ResourceManager.GetString("Command_Description_Ban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите название роли первым аргументом, чтобы упомянуть всех участников роли. Вызвав команду без аргументов, бот ответит списком ролей, участников которых можно упомянуть. Вызывав команду с двумя аргументами, администраторы бота могут управлять возможностью упоминания роли.
         ///Первым аргументом является идентификатор роли, а вторым - признак возможности упоминания..
         /// </summary>
@@ -159,6 +195,15 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         public static string Command_Description_RemoveRole {
             get {
                 return ResourceManager.GetString("Command_Description_RemoveRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Досрочно снимает блокировку у пользователя, чей идентификатор был указан.
+        /// </summary>
+        public static string Command_Description_UnBan {
+            get {
+                return ResourceManager.GetString("Command_Description_UnBan", resourceCulture);
             }
         }
         

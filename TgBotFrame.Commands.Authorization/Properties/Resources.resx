@@ -169,4 +169,19 @@
   <data name="BanController_BanInfo_Infinite" xml:space="preserve">
     <value>Без срока</value>
   </data>
+  <data name="Category_Name_Bans" xml:space="preserve">
+    <value>Блокировки</value>
+  </data>
+  <data name="Command_Description_Ban" xml:space="preserve">
+    <value>Блокирует пользователя внутри бота, не позволяя ему исполнять команды. Различные варианты команды предполагают, что числом является идентификатор пользователя, интервалом — длительность блокировки, а текст — описание причины блокировки для администраторов</value>
+  </data>
+  <data name="Command_Description_UnBan" xml:space="preserve">
+    <value>Досрочно снимает блокировку у пользователя, чей идентификатор был указан</value>
+  </data>
+  <data name="Category_Description_BanInfo" xml:space="preserve">
+    <value>Отвечаем списком заблокированных пользователей. Указав параметром идентификатор пользователя, бот отвечает подробностями блокировки</value>
+  </data>
+  <data name="Category_Description_Bans" xml:space="preserve">
+    <value>Данные команды позволяют управлять блокировками пользователей</value>
+  </data>
 </root>
