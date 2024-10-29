@@ -1,5 +1,5 @@
 ﻿using TgBotFrame.Commands.Attributes;
-using TgBotFrame.Commands.Authorization.Imterfaces;
+using TgBotFrame.Commands.Authorization.Interfaces;
 
 namespace TgBotFrame.Commands.Authorization.Commands;
 

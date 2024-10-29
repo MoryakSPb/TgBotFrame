@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Telegram.Bot;
 using TgBotFrame.Commands.Authorization.Extensions;
-using TgBotFrame.Commands.Authorization.Imterfaces;
+using TgBotFrame.Commands.Authorization.Interfaces;
 using TgBotFrame.Commands.Help.Extensions;
 using TgBotFrame.Commands.Injection;
 using TgBotFrame.Commands.RateLimit.Middleware;

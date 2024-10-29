@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using TgBotFrame.Commands.Authorization.Imterfaces;
+using TgBotFrame.Commands.Authorization.Interfaces;
 using TgBotFrame.Middleware;
 
 namespace TgBotFrame.Commands.Authorization.Middlewares;

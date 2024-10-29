@@ -1,4 +1,4 @@
-﻿namespace TgBotFrame.Commands.Authorization.Imterfaces;
+﻿namespace TgBotFrame.Commands.Authorization.Interfaces;
 
 public interface IAuthorizationData
 {
