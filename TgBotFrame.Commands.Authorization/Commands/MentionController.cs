@@ -45,13 +45,13 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
     public async Task Mention(string roleName)
     {
         int? messageId = Context.GetMessageId();
-        long[] usersIds = await dataContext.Roles
+        DbUser[] users = await dataContext.Roles
             .AsNoTracking()
             .Where(x => x.Name == roleName)
             .Take(1)
-            .SelectMany(x => x.Members.Select(y => y.UserId))
+            .SelectMany(x => x.Members)
             .ToArrayAsync().ConfigureAwait(false);
-        if (usersIds.Length == 0)
+        if (users.Length == 0)
         {
             await botClient.SendTextMessageAsync(
                 Context.GetChatId()!,
@@ -71,7 +71,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
 
         await botClient.SendTextMessageAsync(
             Context.GetChatId()!,
-            string.Join(@", ", usersIds.Select(x => @$"[{x:X}](tg://user?id={x:D})"))
+            string.Join(@", ", users.Select(x => x.ToString()))
             + ResourceManager.GetString(nameof(MentionController_Mention), Context.GetCultureInfo())!,
             Context.GetThreadId(),
             ParseMode.MarkdownV2,
@@ -106,7 +106,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         }
 
         role.MentionEnabled = enable;
-        await dataContext.SaveChangesAsync().ConfigureAwait(false);
+        await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         string text = ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!
                       + (enable

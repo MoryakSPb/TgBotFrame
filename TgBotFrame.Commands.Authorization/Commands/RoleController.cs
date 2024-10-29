@@ -37,9 +37,8 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
         {
             UserId = user,
             RoleId = role.Id,
-            CreatedBy = Context.GetUserId(),
         }).ConfigureAwait(false);
-        await dataContext.SaveChangesAsync().ConfigureAwait(false);
+        await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         await botClient.SendTextMessageAsync(
             Context.GetChatId()!,
@@ -86,7 +85,7 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
         }
 
         dataContext.RoleMembers.Remove(roleMember);
-        await dataContext.SaveChangesAsync().ConfigureAwait(false);
+        await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         await botClient.SendTextMessageAsync(
             Context.GetChatId()!,
