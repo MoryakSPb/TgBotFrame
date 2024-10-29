@@ -12,6 +12,8 @@ public static class InjectionExtensions
     {
         builder.TryAddControllers(Assembly.GetExecutingAssembly());
 
+        builder.TryAddCommandMiddleware<UserInfoMiddleware>();
+        builder.TryAddCommandMiddleware<BanFilterMiddleware>();
         builder.TryAddCommandMiddleware<AuthorizationMiddleware>();
 
         return builder;
