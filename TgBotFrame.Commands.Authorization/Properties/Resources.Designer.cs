@@ -70,6 +70,51 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Пользователь @{0} заблокирован до {1:F}.
+        /// </summary>
+        public static string BanController_Ban_Result {
+            get {
+                return ResourceManager.GetString("BanController_Ban_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Без срока.
+        /// </summary>
+        public static string BanController_BanInfo_Infinite {
+            get {
+                return ResourceManager.GetString("BanController_BanInfo_Infinite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на У данного пользователя нет блокировок.
+        /// </summary>
+        public static string BanController_BanInfo_NotFound {
+            get {
+                return ResourceManager.GetString("BanController_BanInfo_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на До .
+        /// </summary>
+        public static string BanController_BanInfo_Until {
+            get {
+                return ResourceManager.GetString("BanController_BanInfo_Until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пользователь {0} разблокирован.
+        /// </summary>
+        public static string BanController_UnBan_Result {
+            get {
+                return ResourceManager.GetString("BanController_UnBan_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Данные команды позволяют управлять ролями, а также производить некоторые действия с их участниками, например, упоминать их.
         /// </summary>
         public static string Category_Description_Roles {
