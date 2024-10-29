@@ -79,7 +79,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                         Context.GetCultureInfo())!;
                 else if (x.Item1 is not null)
                     displayName = x.Item1.GetString(CATEGORY_NAME_PREFIX + x.CategoryKey,
-                        Context.GetCultureInfo()) ?? throw new KeyNotFoundException();
+                        Context.GetCultureInfo()) ?? x.CategoryKey;
                 else throw new InvalidOperationException();
 
                 return (x.Item1, x.CategoryKey, displayName);
@@ -131,7 +131,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 Context.GetCultureInfo())
             : GetResourceManager(commands.assembly)?.GetString(
                 CATEGORY_DESCRIPTION_PREFIX + category,
-                Context.GetCultureInfo())) ?? throw new KeyNotFoundException();
+                Context.GetCultureInfo())) ?? category;
 
         await botClient.SendTextMessageAsync(
             Context.GetChatId()!,
