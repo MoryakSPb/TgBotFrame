@@ -10,6 +10,7 @@ using TgBotFrame.Utility;
 
 namespace TgBotFrame.Injection;
 
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 public static class InjectionExtensions
 {
     public static IServiceCollection AddTgBotFrameCore(this IServiceCollection serviceCollection)
