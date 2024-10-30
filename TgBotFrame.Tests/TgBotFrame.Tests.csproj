@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Stubs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TgBotFrame\TgBotFrame.csproj" />
   </ItemGroup>
 
