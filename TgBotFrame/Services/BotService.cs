@@ -18,7 +18,7 @@ public class BotService(
     public async Task HandleUpdateAsync(ITelegramBotClient _, Update update,
         CancellationToken cancellationToken)
     {
-        logger.LogDebug("Update {id} received", update.Id);
+        logger.LogDebug(@"Update {id} received", update.Id);
         await RunMiddleware(update, cancellationToken).ConfigureAwait(false);
     }
 
@@ -28,13 +28,13 @@ public class BotService(
         switch (source)
         {
             case HandleErrorSource.PollingError:
-                logger.LogError(exception, "Exception occured during get Telegram updates");
+                logger.LogError(exception, @"Exception occured during get Telegram updates");
                 break;
             case HandleErrorSource.FatalError:
-                logger.LogCritical(exception, "A fatal uncaught exception occured");
+                logger.LogCritical(exception, @"A fatal uncaught exception occured");
                 throw exception;
             case HandleErrorSource.HandleUpdateError:
-                logger.LogError(exception, "Exception occured in " + nameof(BotService));
+                logger.LogError(exception, @"Exception occured in " + nameof(BotService));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(source), source, null);

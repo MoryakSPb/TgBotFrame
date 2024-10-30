@@ -11,9 +11,9 @@ public sealed class FrameMetricsService : IDisposable
 
     public FrameMetricsService(IMeterFactory meterFactory)
     {
-        _meter = meterFactory.Create("TgBotFrame");
+        _meter = meterFactory.Create(@"TgBotFrame");
 
-        _updatesHandled = _meter.CreateCounter<int>("updates_handled");
+        _updatesHandled = _meter.CreateCounter<int>(@"updates_handled");
     }
 
     public void Dispose()
@@ -24,5 +24,5 @@ public sealed class FrameMetricsService : IDisposable
     public void IncUpdatesHandled(in UpdateType updateType) =>
         _updatesHandled.Add(
             1,
-            new KeyValuePair<string, object?>("type", updateType.ToString("G")));
+            new KeyValuePair<string, object?>(@"type", updateType.ToString(@"G")));
 }

@@ -27,7 +27,7 @@ public sealed class TelegramRateLimitedHandler : DelegatingHandler
         HttpResponseMessage response = new(HttpStatusCode.TooManyRequests);
         if (lease.TryGetMetadata(MetadataName.RetryAfter, out TimeSpan retryAfter))
             response.Headers.Add(
-                "Retry-After",
+                @"Retry-After",
                 ((int)Math.Floor(retryAfter.TotalSeconds)).ToString(CultureInfo.InvariantCulture));
 
         return response;

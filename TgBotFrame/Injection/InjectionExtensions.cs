@@ -16,7 +16,7 @@ public static class InjectionExtensions
     {
         if (serviceCollection.All(x =>
                 x.ServiceType != typeof(ITelegramBotClient) && x.Lifetime == ServiceLifetime.Singleton))
-            throw new KeyNotFoundException("Singleton ITelegramBotClient service not found");
+            throw new KeyNotFoundException(@"Singleton ITelegramBotClient service not found");
 
         serviceCollection.AddMetrics();
         serviceCollection.TryAddSingleton<FrameMetricsService>();
