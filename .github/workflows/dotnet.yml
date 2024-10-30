@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore TgBotFrame.sln
+      run: dotnet restore TgBotFrame.sln --configfile nuget.config
     - name: Check code style
       run: dotnet format TgBotFrame.sln --no-restore --verify-no-changes --verbosity normal
     - name: Build
