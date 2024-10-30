@@ -56,7 +56,7 @@ public class BotService(
     {
         frameMetricsService.IncUpdatesHandled(update.Type);
         AsyncServiceScope scope = scopeFactory.CreateAsyncScope();
-        await using ConfiguredAsyncDisposable scope1 = scope.ConfigureAwait(false);
+        await using ConfiguredAsyncDisposable _ = scope.ConfigureAwait(false);
         FrameMiddleware[] middlewares = scope.ServiceProvider.GetServices<FrameMiddleware>().ToArray();
         if (middlewares.Length == 0)
         {
@@ -70,6 +70,6 @@ public class BotService(
         FrameMiddleware firstMiddleware = middlewares[0];
 
         using FrameContext context = new();
-        await firstMiddleware.Next(update, context, cancellationToken).ConfigureAwait(false);
+        await firstMiddleware.InvokeAsync(update, context, cancellationToken).ConfigureAwait(false);
     }
 }
