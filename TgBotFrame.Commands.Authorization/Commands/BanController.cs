@@ -26,10 +26,11 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     [Command(nameof(Ban))]
     public async Task Ban(long userId, TimeSpan duration, string description)
     {
+        DateTime until = duration == TimeSpan.MaxValue ? DateTime.MaxValue : DateTime.UtcNow + duration;
         EntityEntry<DbBan> entity = await dataContext.Bans.AddAsync(new()
         {
             UserId = userId,
-            Until = DateTime.UtcNow + duration,
+            Until = until,
             Description = description,
         }).ConfigureAwait(false);
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
@@ -41,7 +42,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
                 DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName()),
                 entity.Entity.Until),
             Context.GetThreadId(),
-            ParseMode.MarkdownV2,
+            ParseMode.None,
             [],
             replyParameters: messageId is not null
                 ? new()
@@ -66,7 +67,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             string.Format(ResourceManager.GetString(nameof(BanController_UnBan_Result), Context.GetCultureInfo())!,
                 DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName())),
             Context.GetThreadId(),
-            ParseMode.MarkdownV2,
+            ParseMode.None,
             [],
             replyParameters: messageId is not null
                 ? new()
@@ -100,7 +101,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             Context.GetChatId()!,
             text.ToString(),
             Context.GetThreadId(),
-            ParseMode.MarkdownV2,
+            ParseMode.None,
             [],
             replyParameters: messageId is not null
                 ? new()
@@ -144,7 +145,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             Context.GetChatId()!,
             result,
             Context.GetThreadId(),
-            ParseMode.MarkdownV2,
+            ParseMode.None,
             [],
             replyParameters: messageId is not null
                 ? new()
