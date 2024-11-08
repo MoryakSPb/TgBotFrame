@@ -14,10 +14,7 @@ public sealed class CommandsMetricsService : IDisposable
         _commandsExecuted = _meter.CreateCounter<int>("commands_executed");
     }
 
-    public void Dispose()
-    {
-        _meter.Dispose();
-    }
+    public void Dispose() => _meter.Dispose();
 
 
     public void IncCommandsExecuted(in string command, in long userId) =>

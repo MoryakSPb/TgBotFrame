@@ -27,12 +27,10 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         }
 
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             text.ToString(),
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -53,12 +51,11 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
             .ToArrayAsync().ConfigureAwait(false);
         if (users.Length == 0)
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 ResourceManager.GetString(nameof(MentionController_Mention_NotFound), Context.GetCultureInfo())!,
-                Context.GetThreadId(),
-                ParseMode.MarkdownV2,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.MarkdownV2,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -69,13 +66,13 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         }
 
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             string.Join(@", ", users.Select(x => x.ToString()))
             + ResourceManager.GetString(nameof(MentionController_Mention), Context.GetCultureInfo())!,
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            []).ConfigureAwait(false);
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2,
+            cancellationToken: CancellationToken).ConfigureAwait(false);
     }
 
     [Command(nameof(Mention))]
@@ -88,14 +85,14 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
 
         if (role is null)
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 string.Format(
-                    ResourceManager.GetString(nameof(RoleManagementController_Add_NotFound), Context.GetCultureInfo())!,
+                    ResourceManager.GetString(nameof(RoleManagementController_Add_NotFound),
+                        Context.GetCultureInfo())!,
                     roleName),
-                Context.GetThreadId(),
-                ParseMode.MarkdownV2,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.MarkdownV2,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -108,17 +105,17 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         role.MentionEnabled = enable;
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
-        string text = ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!
-                      + (enable
-                          ? ResourceManager.GetString(nameof(MentionController_Mention_On), Context.GetCultureInfo())!
-                          : ResourceManager.GetString(nameof(MentionController_Mention_Off),
-                              Context.GetCultureInfo())!);
-        await botClient.SendTextMessageAsync(
+        string text =
+            ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!
+            + (enable
+                ? ResourceManager.GetString(nameof(MentionController_Mention_On), Context.GetCultureInfo())!
+                : ResourceManager.GetString(nameof(MentionController_Mention_Off),
+                    Context.GetCultureInfo())!);
+        await botClient.SendMessage(
             Context.GetChatId()!,
             text,
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2,
             replyParameters: messageId is not null
                 ? new()
                 {

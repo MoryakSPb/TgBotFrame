@@ -31,8 +31,12 @@ public class RateLimitMiddleware(IOptions<RateLimitOptions> options, ILogger<Rat
         using RateLimitLease lease = await rateLimiter.AcquireAsync(cancellationToken: ct).ConfigureAwait(false);
 
         if (lease.IsAcquired)
+        {
             await Next(update, context, ct).ConfigureAwait(false);
+        }
         else
+        {
             logger.LogInformation("User {id} reached command limit", userId);
+        }
     }
 }

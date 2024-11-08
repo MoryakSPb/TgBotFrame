@@ -15,28 +15,55 @@ public static class ResourcesExtensions
     internal static string GetFormatText(this Type type, CultureInfo cultureInfo, bool name)
     {
         if (type == typeof(string))
+        {
             return Resources.ResourceManager.GetString(@"Text" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
+
         if (type == typeof(bool))
+        {
             return Resources.ResourceManager.GetString(@"Bool" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
+
         if (type == typeof(char))
+        {
             return Resources.ResourceManager.GetString(@"Char" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
+
         if (type == typeof(TimeSpan))
+        {
             return Resources.ResourceManager.GetString(@"Duration" + (name ? @"Name" : @"Format"),
                 cultureInfo)!;
+        }
+
         if (type == typeof(DateTime))
+        {
             return Resources.ResourceManager.GetString(@"DateTime" + (name ? @"Name" : @"Format"),
                 cultureInfo)!;
+        }
+
         if (type == typeof(DateOnly))
+        {
             return Resources.ResourceManager.GetString(@"Date" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
+
         if (type == typeof(TimeOnly))
+        {
             return Resources.ResourceManager.GetString(@"Time" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
 
         Type[] interfaces = type.GetInterfaces();
 
-        if (interfaces.Any(x => x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IBinaryInteger<>)))
+        if (interfaces.Any(x =>
+                x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IBinaryInteger<>)))
+        {
             return Resources.ResourceManager.GetString(@"Int" + (name ? @"Name" : @"Format"), cultureInfo)!;
-        if (interfaces.Any(x => x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IFloatingPoint<>)))
+        }
+
+        if (interfaces.Any(x =>
+                x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IFloatingPoint<>)))
+        {
             return Resources.ResourceManager.GetString(@"Float" + (name ? @"Name" : @"Format"), cultureInfo)!;
+        }
 
         return @"???";
     }

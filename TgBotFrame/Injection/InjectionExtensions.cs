@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Polly;
@@ -10,14 +11,16 @@ using TgBotFrame.Utility;
 
 namespace TgBotFrame.Injection;
 
-[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+[ExcludeFromCodeCoverage]
 public static class InjectionExtensions
 {
     public static IServiceCollection AddTgBotFrameCore(this IServiceCollection serviceCollection)
     {
         if (serviceCollection.All(x =>
                 x.ServiceType != typeof(ITelegramBotClient) && x.Lifetime == ServiceLifetime.Singleton))
+        {
             throw new KeyNotFoundException(@"Singleton ITelegramBotClient service not found");
+        }
 
         serviceCollection.AddMetrics();
         serviceCollection.TryAddSingleton<FrameMetricsService>();

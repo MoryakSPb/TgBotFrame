@@ -37,7 +37,10 @@ public static class InjectionExtensions
         serviceCollection.AddTransient<FrameMiddleware, CommandSplitterMiddleware>();
         serviceCollection.AddTransient<FrameMiddleware, CommandRouterMiddleware>();
         foreach (Type middleware in builder.Middlewares)
+        {
             serviceCollection.AddTransient(typeof(FrameMiddleware), middleware);
+        }
+
         serviceCollection.AddTransient<FrameMiddleware, CallbackAnswererMiddleware>();
         serviceCollection.AddTransient<FrameMiddleware, CommandInvokerMiddleware>();
 

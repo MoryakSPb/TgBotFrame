@@ -16,11 +16,13 @@ public class FrameCommandsBuilder
         Type[] types = assembly.GetExportedTypes();
         foreach (Type type in types
                      .Where(x => x.GetCustomAttribute<CommandControllerAttribute>() is not null))
+        {
             if (!Controllers.Contains(type))
             {
                 Controllers.Add(type);
                 ServiceCollection.TryAddTransient(type);
             }
+        }
 
         return this;
     }

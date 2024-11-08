@@ -28,22 +28,32 @@ public class CommandInvokerMiddleware(CommandsMetricsService metricsService)
         try
         {
             if (methodInfo.ReturnType == typeof(void))
+            {
                 methodInfo.Invoke(controller, args);
+            }
             else if (methodInfo.ReturnType == typeof(Task))
+            {
                 await ((Task?)methodInfo.Invoke(controller, args) ?? Task.CompletedTask)
                     .ConfigureAwait(false);
+            }
             else if (methodInfo.ReturnType == typeof(ValueTask))
+            {
                 await ((ValueTask?)methodInfo.Invoke(controller, args) ?? ValueTask.CompletedTask)
                     .ConfigureAwait(false);
+            }
         }
         finally
         {
             long? userId = context.GetUserId();
             string? commandKey = context.GetCommandName();
             if (userId is not null)
+            {
                 metricsService.IncCommandsExecuted(commandKey!, userId.Value);
+            }
             else
+            {
                 metricsService.IncCommandsExecuted(commandKey!);
+            }
         }
     }
 }

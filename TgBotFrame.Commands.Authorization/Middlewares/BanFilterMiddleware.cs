@@ -9,6 +9,8 @@ public class BanFilterMiddleware(IAuthorizationData data) : FrameMiddleware
     {
         long? userId = context.GetUserId();
         if (userId is null || !await data.IsUserIdBanned(userId.Value, ct).ConfigureAwait(false))
+        {
             await Next(update, context, ct).ConfigureAwait(false);
+        }
     }
 }

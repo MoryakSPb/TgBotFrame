@@ -32,29 +32,24 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 @$"/{nameof(HelpSyntax)}"),
         ]);
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             Resources.ResourceManager.GetString(nameof(HelpCommandController_Help_Title),
                 Context.GetCultureInfo())!,
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
             replyMarkup: keyboard
         ).ConfigureAwait(false);
     }
 
     [Command(nameof(HelpSyntax))]
-    public async Task HelpSyntax()
-    {
-        await botClient.SendTextMessageAsync(
+    public async Task HelpSyntax() =>
+        await botClient.SendMessage(
             Context.GetChatId()!,
             Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpSyntax_Title),
                 Context.GetCultureInfo())!,
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            []
-        ).ConfigureAwait(false);
-    }
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2).ConfigureAwait(false);
 
     [Command(nameof(HelpList))]
     public async Task HelpList()
@@ -74,13 +69,20 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             {
                 string displayName;
                 if (string.IsNullOrEmpty(x.CategoryKey))
+                {
                     displayName = Resources.ResourceManager.GetString(
                         nameof(HelpCommandController_HelpList_WithoutCategory),
                         Context.GetCultureInfo())!;
+                }
                 else if (x.Item1 is not null)
+                {
                     displayName = x.Item1.GetString(CATEGORY_NAME_PREFIX + x.CategoryKey,
                         Context.GetCultureInfo()) ?? x.CategoryKey;
-                else throw new InvalidOperationException();
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
 
                 return (x.Item1, x.CategoryKey, displayName);
             }).OrderBy(x => x.displayName, StringComparer.Create(Context.GetCultureInfo(), true)).Select(x => new[]
@@ -91,13 +93,12 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             });
 
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpList_Description),
                 Context.GetCultureInfo())!,
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
             replyMarkup: new InlineKeyboardMarkup(buttons)
         ).ConfigureAwait(false);
     }
@@ -111,13 +112,12 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         if (!commandExplorer.CategoriesCommandsNames.TryGetValue(category,
                 out (Assembly assembly, FrozenSet<string> commands) commands))
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpCategory_NotFound),
                     Context.GetCultureInfo())!,
-                Context.GetThreadId(),
-                ParseMode.None,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.None,
                 replyMarkup: null).ConfigureAwait(false);
             return;
         }
@@ -133,28 +133,27 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 CATEGORY_DESCRIPTION_PREFIX + category,
                 Context.GetCultureInfo())) ?? category;
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             text,
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
             replyMarkup: new InlineKeyboardMarkup(buttons)).ConfigureAwait(false);
     }
 
     [Command(nameof(HelpCommand))]
     public async Task HelpCommand(string command)
     {
-        if (!commandExplorer.Commands.TryGetValue(command, out FrozenDictionary<MethodInfo, ParameterInfo[]>? methods)
+        if (!commandExplorer.Commands.TryGetValue(command,
+                out FrozenDictionary<MethodInfo, ParameterInfo[]>? methods)
             || methods.Count == 0)
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpCommand_NotFound),
                     Context.GetCultureInfo())!,
-                Context.GetThreadId(),
-                ParseMode.None,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.None,
                 replyMarkup: null).ConfigureAwait(false);
             return;
         }
@@ -183,12 +182,11 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         text.Append(resourceManager?.GetString(COMMAND_DESCRIPTION_PREFIX + command,
             Context.GetCultureInfo()));
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             text.ToString(),
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
             replyMarkup: null).ConfigureAwait(false);
     }
 }

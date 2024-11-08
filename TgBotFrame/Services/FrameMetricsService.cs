@@ -16,10 +16,7 @@ public sealed class FrameMetricsService : IDisposable
         _updatesHandled = _meter.CreateCounter<int>(@"updates_handled");
     }
 
-    public void Dispose()
-    {
-        _meter.Dispose();
-    }
+    public void Dispose() => _meter.Dispose();
 
     public void IncUpdatesHandled(in UpdateType updateType) =>
         _updatesHandled.Add(

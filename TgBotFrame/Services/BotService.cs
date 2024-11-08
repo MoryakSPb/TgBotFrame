@@ -43,14 +43,12 @@ public class BotService(
         return Task.CompletedTask;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken) =>
         await botClient.ReceiveAsync(this, new()
         {
             DropPendingUpdates = false,
             AllowedUpdates = Enum.GetValues<UpdateType>(),
         }, stoppingToken).ConfigureAwait(false);
-    }
 
     private async Task RunMiddleware(Update update, CancellationToken cancellationToken = default)
     {
@@ -64,7 +62,10 @@ public class BotService(
             return;
         }
 
-        for (int i = 0; i < middlewares.Length - 1; i++) middlewares[i].Next = middlewares[i + 1].InvokeAsync;
+        for (int i = 0; i < middlewares.Length - 1; i++)
+        {
+            middlewares[i].Next = middlewares[i + 1].InvokeAsync;
+        }
 
         middlewares[^1].Next = FrameMiddleware.Empty;
         FrameMiddleware firstMiddleware = middlewares[0];

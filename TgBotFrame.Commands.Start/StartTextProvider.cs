@@ -23,8 +23,16 @@ public class StartTextProvider
 
     public string GetText(in CultureInfo culture)
     {
-        if (_staticText is not null) return _staticText;
-        if (_resourceKey is not null) return _resourceManager.GetString(_resourceKey, culture) ?? string.Empty;
+        if (_staticText is not null)
+        {
+            return _staticText;
+        }
+
+        if (_resourceKey is not null)
+        {
+            return _resourceManager.GetString(_resourceKey, culture) ?? string.Empty;
+        }
+
         return Resources.ResourceManager.GetString(nameof(StartDefaultText), culture) ?? nameof(StartDefaultText);
     }
 }

@@ -33,12 +33,11 @@ public class AuthorizationMiddleware(
             if (!allowed)
             {
                 int? messageId = context.GetMessageId();
-                await botClient.SendTextMessageAsync(
+                await botClient.SendMessage(
                     context.GetChatId()!,
                     ResourceManager.GetString(nameof(AuthorizationMiddleware_Denied), context.GetCultureInfo())!,
-                    context.GetThreadId(),
-                    ParseMode.MarkdownV2,
-                    [],
+                    messageThreadId: context.GetThreadId(),
+                    parseMode: ParseMode.MarkdownV2,
                     replyParameters: messageId is not null
                         ? new()
                         {

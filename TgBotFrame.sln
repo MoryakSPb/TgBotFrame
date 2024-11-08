@@ -25,7 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 		Directory.Packages.props = Directory.Packages.props
-		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBotFrame.Tests", "TgBotFrame.Tests\TgBotFrame.Tests.csproj", "{12AFF810-DA1C-495C-98AC-C695C2BF2580}"
@@ -77,7 +76,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {AD885575-B356-41FC-92C9-E5987C15F54D}
 		RESX_NeutralResourcesLanguage = ru-RU
+		SolutionGuid = {AD885575-B356-41FC-92C9-E5987C15F54D}
 	EndGlobalSection
 EndGlobal

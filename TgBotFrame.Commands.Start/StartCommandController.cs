@@ -13,12 +13,11 @@ public class StartCommandController(ITelegramBotClient botClient, StartTextProvi
     public async Task Start()
     {
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             startTextProvider.GetText(Context.GetCultureInfo()),
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2,
             replyParameters: messageId is not null
                 ? new()
                 {

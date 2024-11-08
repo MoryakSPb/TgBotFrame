@@ -5,7 +5,8 @@ namespace TgBotFrame.Tests.Middlewares;
 
 public class DecrementMiddleware : FrameMiddleware
 {
-    public int Value { get; private set; } = 0;
+    public int Value { get; private set; }
+
     public override async Task InvokeAsync(Update update, FrameContext context, CancellationToken ct = default)
     {
         Value--;

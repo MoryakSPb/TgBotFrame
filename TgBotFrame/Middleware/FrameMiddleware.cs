@@ -15,6 +15,9 @@ public abstract class FrameMiddleware : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing) Next = null!;
+        if (disposing)
+        {
+            Next = null!;
+        }
     }
 }

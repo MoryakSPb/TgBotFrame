@@ -16,14 +16,14 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
             .ConfigureAwait(false);
         if (role is null)
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 string.Format(
-                    ResourceManager.GetString(nameof(RoleManagementController_Add_NotFound), Context.GetCultureInfo())!,
+                    ResourceManager.GetString(nameof(RoleManagementController_Add_NotFound),
+                        Context.GetCultureInfo())!,
                     roleName),
-                Context.GetThreadId(),
-                ParseMode.MarkdownV2,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.MarkdownV2,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -40,14 +40,13 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
         }).ConfigureAwait(false);
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             string.Format(
                 ResourceManager.GetString(nameof(RoleManagementController_Add_Success), Context.GetCultureInfo())!,
                 user, roleName),
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2,
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -67,14 +66,13 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
 
         if (roleMember is null)
         {
-            await botClient.SendTextMessageAsync(
+            await botClient.SendMessage(
                 Context.GetChatId()!,
                 string.Format(
                     ResourceManager.GetString(nameof(RoleManagementController_Remove_NotFound),
                         Context.GetCultureInfo())!, user, roleName),
-                Context.GetThreadId(),
-                ParseMode.MarkdownV2,
-                [],
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.MarkdownV2,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -87,14 +85,14 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
         dataContext.RoleMembers.Remove(roleMember);
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             string.Format(
-                ResourceManager.GetString(nameof(RoleManagementController_Remove_Success), Context.GetCultureInfo())!,
+                ResourceManager.GetString(nameof(RoleManagementController_Remove_Success),
+                    Context.GetCultureInfo())!,
                 user, roleName),
-            Context.GetThreadId(),
-            ParseMode.MarkdownV2,
-            [],
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.MarkdownV2,
             replyParameters: messageId is not null
                 ? new()
                 {

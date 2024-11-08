@@ -22,13 +22,18 @@ public sealed class TelegramRateLimitedHandler : DelegatingHandler
         using RateLimitLease lease =
             await _limiter.AcquireAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        if (lease.IsAcquired) return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        if (lease.IsAcquired)
+        {
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        }
 
         HttpResponseMessage response = new(HttpStatusCode.TooManyRequests);
         if (lease.TryGetMetadata(MetadataName.RetryAfter, out TimeSpan retryAfter))
+        {
             response.Headers.Add(
                 @"Retry-After",
                 ((int)Math.Floor(retryAfter.TotalSeconds)).ToString(CultureInfo.InvariantCulture));
+        }
 
         return response;
     }

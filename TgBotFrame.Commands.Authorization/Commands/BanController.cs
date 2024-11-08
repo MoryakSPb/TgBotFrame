@@ -36,14 +36,12 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             string.Format(ResourceManager.GetString(nameof(BanController_Ban_Result), Context.GetCultureInfo())!,
                 DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName()),
                 entity.Entity.Until),
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -62,13 +60,11 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             string.Format(ResourceManager.GetString(nameof(BanController_UnBan_Result), Context.GetCultureInfo())!,
                 DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName())),
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -97,18 +93,17 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         }
 
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
-            Context.GetChatId()!,
-            text.ToString(),
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
-            replyParameters: messageId is not null
-                ? new()
-                {
-                    MessageId = messageId.Value,
-                }
-                : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+        await botClient.SendMessage(
+                Context.GetChatId()!,
+                text.ToString(),
+                ParseMode.None,
+                messageId is not null
+                    ? new()
+                    {
+                        MessageId = messageId.Value,
+                    }
+                    : null, messageThreadId: Context.GetThreadId(), cancellationToken: CancellationToken)
+            .ConfigureAwait(false);
     }
 
     [Restricted("admin", "ban_list")]
@@ -141,12 +136,10 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         }
 
         int? messageId = Context.GetMessageId();
-        await botClient.SendTextMessageAsync(
+        await botClient.SendMessage(
             Context.GetChatId()!,
             result,
-            Context.GetThreadId(),
-            ParseMode.None,
-            [],
+            messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
                 {

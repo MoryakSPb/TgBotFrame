@@ -13,8 +13,13 @@ public class CommandSplitterMiddleware : FrameMiddleware
         string? text = null;
 
         if (update.CallbackQuery is not null && update.CallbackQuery.Data?[0] == '/')
+        {
             text = update.CallbackQuery.Data;
-        else if (update.Message?.Text is not null && update.Message.Text[0] == '/') text = update.Message.Text;
+        }
+        else if (update.Message?.Text is not null && update.Message.Text[0] == '/')
+        {
+            text = update.Message.Text;
+        }
 
         if (text is not null)
         {
@@ -49,7 +54,11 @@ public class CommandSplitterMiddleware : FrameMiddleware
         List<string> argsList = [];
         args = argsList;
         char[]? array = null;
-        if (input.Length > 64) array = ArrayPool<char>.Shared.Rent(input.Length);
+        if (input.Length > 64)
+        {
+            array = ArrayPool<char>.Shared.Rent(input.Length);
+        }
+
         Span<char> chars = array ?? stackalloc char[input.Length];
         string command = string.Empty;
         try
@@ -70,7 +79,11 @@ public class CommandSplitterMiddleware : FrameMiddleware
                         escapeMode = !escapeMode;
                         continue;
                     case ' ' when !(escapeMode || escapeOnce):
-                        if (count == 0) continue;
+                        if (count == 0)
+                        {
+                            continue;
+                        }
+
                         if (commandMode)
                         {
                             command = new(chars[..count]);
@@ -104,7 +117,10 @@ public class CommandSplitterMiddleware : FrameMiddleware
         }
         finally
         {
-            if (array is not null) ArrayPool<char>.Shared.Return(array);
+            if (array is not null)
+            {
+                ArrayPool<char>.Shared.Return(array);
+            }
         }
     }
 }

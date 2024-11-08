@@ -92,7 +92,7 @@ public sealed class CommandRouterMiddleware(
         logger.LogInformation("User <{userId}> enter unknown command {commandName}",
             context.GetUserId(),
             context.GetCommandName());
-        await botClient.SendTextMessageAsync(update.Message!.Chat,
+        await botClient.SendMessage(update.Message!.Chat,
             Resources.ResourceManager.GetString(@"CommandNotFoundMessage", Culture)!
             + Environment.NewLine
             + string.Format(Resources.ResourceManager.GetString(@"UseHelpMessage", Culture)!,
@@ -110,7 +110,7 @@ public sealed class CommandRouterMiddleware(
             context.GetUserId(),
             context.GetCommandName(),
             Environment.NewLine + string.Join(Environment.NewLine, context.GetCommandArgsRaw()));
-        await botClient.SendTextMessageAsync(update.Message!.Chat,
+        await botClient.SendMessage(update.Message!.Chat,
             Resources.ResourceManager.GetString(@"InvalidArgsCountMessage", Culture)
             + Environment.NewLine
             + string.Format(Resources.ResourceManager.GetString(@"UseHelpMessage", Culture)!,
@@ -126,7 +126,7 @@ public sealed class CommandRouterMiddleware(
         logger.LogWarning(@"User <{userId}> enter ambiguous command ""{commandName}""",
             context.GetUserId(),
             context.GetCommandName());
-        await botClient.SendTextMessageAsync(update.Message!.Chat,
+        await botClient.SendMessage(update.Message!.Chat,
             string.Format(Resources.ResourceManager.GetString(@"AmbiguousCall", Culture)!, CommandKey)
             + Environment.NewLine
             + Resources.ResourceManager.GetString(@"ContactWithAdminMessage", Culture)!,
@@ -146,7 +146,7 @@ public sealed class CommandRouterMiddleware(
             context.GetCommandName(),
             invalidArgIndex,
             context.GetCommandArgsRaw()[invalidArgIndex]);
-        await botClient.SendTextMessageAsync(update.Message!.Chat,
+        await botClient.SendMessage(update.Message!.Chat,
             string.Format(
                 Resources.ResourceManager.GetString(@"InvalidArgFormatMessage",
                     Culture)!, context.GetCommandArgsRaw()[invalidArgIndex])
@@ -166,14 +166,20 @@ public sealed class CommandRouterMiddleware(
         args = [];
         KeyValuePair<MethodInfo, ParameterInfo[]> method;
         if (allMethods.Count == 1 && (method = allMethods.First()).Value.Length == 0)
+        {
             return (method.Key, -1);
+        }
 
         Dictionary<int, MethodCandidate> candidates = allMethods
             .Where(x => x.Value.Length == CommandArgumentsRaw.Count)
             .Select(x => new MethodCandidate(x.Key, x.Value))
             .Zip(Enumerable.Range(0, allMethods.Count))
             .ToDictionary(x => x.Second, x => x.First);
-        if (candidates.Count == 0) return (default, -1);
+        if (candidates.Count == 0)
+        {
+            return (default, -1);
+        }
+
         List<int> candidatesToRemove = new(candidates.Count);
 
         int mentionCounter = 0;
@@ -208,7 +214,10 @@ public sealed class CommandRouterMiddleware(
                     }
                     else
                     {
-                        if (mention.User is not null) pair.Value.Args[i] = mention.User;
+                        if (mention.User is not null)
+                        {
+                            pair.Value.Args[i] = mention.User;
+                        }
                     }
 
                     mentionCounter++;
@@ -234,9 +243,13 @@ public sealed class CommandRouterMiddleware(
                     }
 
                     if (result)
+                    {
                         pair.Value.Args[i] = parseArgs[2]!;
+                    }
                     else
+                    {
                         candidatesToRemove.Add(pair.Key);
+                    }
                 }
                 else
                 {
@@ -244,10 +257,17 @@ public sealed class CommandRouterMiddleware(
                 }
             }
 
-            if (candidatesToRemove.Where(candidates.Remove).Any(_ => candidates.Count == 0)) return (null, i);
+            if (candidatesToRemove.Where(candidates.Remove).Any(_ => candidates.Count == 0))
+            {
+                return (null, i);
+            }
         }
 
-        if (candidates.Count > 1) return (null, int.MaxValue);
+        if (candidates.Count > 1)
+        {
+            return (null, int.MaxValue);
+        }
+
         MethodCandidate resultStruct = candidates.Values.First();
         args = resultStruct.Args;
         return (resultStruct.Method, -1);

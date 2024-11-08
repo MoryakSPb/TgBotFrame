@@ -48,7 +48,8 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
         (long? chatId, int? threadId, int? messageId) = update.Type switch
         {
             UpdateType.Unknown => (null, null, null),
-            UpdateType.Message => (update.Message!.Chat.Id, update.Message!.MessageThreadId, update.Message!.MessageId),
+            UpdateType.Message => (update.Message!.Chat.Id, update.Message!.MessageThreadId,
+                update.Message!.MessageId),
             UpdateType.InlineQuery => (null, null, null),
             UpdateType.ChosenInlineResult => (null, null, null),
             UpdateType.CallbackQuery => (update.CallbackQuery!.Message?.Chat.Id,
@@ -66,7 +67,8 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
             UpdateType.MyChatMember => (null, null, null),
             UpdateType.ChatMember => (update.ChatMember!.Chat.Id, null, null),
             UpdateType.ChatJoinRequest => (update.ChatJoinRequest!.UserChatId, null, null),
-            UpdateType.MessageReaction => (update.MessageReaction!.Chat.Id, null, update.MessageReaction!.MessageId),
+            UpdateType.MessageReaction => (update.MessageReaction!.Chat.Id, null,
+                update.MessageReaction!.MessageId),
             UpdateType.MessageReactionCount => (update.MessageReactionCount!.Chat.Id, null,
                 update.MessageReactionCount!.MessageId),
             UpdateType.ChatBoost => (update.ChatBoost!.Chat.Id, null, null),
@@ -110,7 +112,7 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
         };
         if (BotUsername is null)
         {
-            User result = await botClient.GetMeAsync(ct).ConfigureAwait(false);
+            User result = await botClient.GetMe(ct).ConfigureAwait(false);
             BotUsername = result.Username!;
         }
 

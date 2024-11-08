@@ -120,9 +120,20 @@ public class UserInfoMiddleware(IAuthorizationData data) : FrameMiddleware
             }
             else
             {
-                if (entity.UserName != userName) entity.UserName = userName;
-                if (entity.FirstName != firstName) entity.FirstName = firstName;
-                if (entity.LastName != lastName) entity.LastName = lastName;
+                if (entity.UserName != userName)
+                {
+                    entity.UserName = userName;
+                }
+
+                if (entity.FirstName != firstName)
+                {
+                    entity.FirstName = firstName;
+                }
+
+                if (entity.LastName != lastName)
+                {
+                    entity.LastName = lastName;
+                }
             }
 
             await data.SaveChangesAsync(ct).ConfigureAwait(false);

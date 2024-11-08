@@ -21,7 +21,10 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
         foreach (Type type in commandControllers.Distinct())
         {
             CommandControllerAttribute? controllerAttribute = type.GetCustomAttribute<CommandControllerAttribute>();
-            if (controllerAttribute is null) continue;
+            if (controllerAttribute is null)
+            {
+                continue;
+            }
 
             if (!categories.TryGetValue(controllerAttribute.CategoryKey, out List<string>? categoryMethods))
             {
@@ -33,12 +36,19 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
             foreach (MethodInfo methodInfo in type.GetMethods())
             {
                 CommandAttribute? attribute = methodInfo.GetCustomAttribute<CommandAttribute>();
-                if (attribute is null) continue;
+                if (attribute is null)
+                {
+                    continue;
+                }
+
                 string name = attribute.Name;
                 categoryMethods.Add(name);
                 if (controllers.TryGetValue(name, out List<MethodInfo>? methods))
                 {
-                    if (!methods.Contains(methodInfo)) methods.Add(methodInfo);
+                    if (!methods.Contains(methodInfo))
+                    {
+                        methods.Add(methodInfo);
+                    }
                 }
                 else
                 {
