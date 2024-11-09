@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace TgBotFrame.Example;
 
-public class ExampleFrameAuthorizationDataContextFactory : IDesignTimeDbContextFactory<ExampleDataContext>
+public class ExampleDataContextFactory : IDesignTimeDbContextFactory<ExampleDataContext>
 {
     public ExampleDataContext CreateDbContext(string[] args)
     {
