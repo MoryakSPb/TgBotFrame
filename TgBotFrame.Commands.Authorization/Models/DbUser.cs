@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TgBotFrame.Data;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
-public class DbUser : IEquatable<DbUser>
+public class DbUser : IModelEntityScheme<DbUser>, IEquatable<DbUser>
 {
     public required long Id { get; init; }
 
