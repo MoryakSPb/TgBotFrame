@@ -12,8 +12,10 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
     public const string MESSAGE_ID_PROPS_KEY = "MessageId";
     public const string USER_ID_PROPS_KEY = "UserId";
     public const string BOT_USERNAME_KEY = nameof(BotUsername);
+    public const string BOT_ID_KEY = nameof(BotId);
 
     public string? BotUsername { get; private set; }
+    public long BotId { get; private set; }
 
     public override async Task InvokeAsync(Update update, FrameContext context, CancellationToken ct = default)
     {
@@ -114,6 +116,7 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
         {
             User result = await botClient.GetMe(ct).ConfigureAwait(false);
             BotUsername = result.Username!;
+            BotId = result.Id;
         }
 
         context.Properties[CULTURE_INFO_PROPS_KEY] =
@@ -123,6 +126,7 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
         context.Properties[MESSAGE_ID_PROPS_KEY] = messageId;
         context.Properties[USER_ID_PROPS_KEY] = userId;
         context.Properties[BOT_USERNAME_KEY] = BotUsername;
+        context.Properties[BOT_ID_KEY] = BotId;
 
         await Next(update, context, ct).ConfigureAwait(false);
     }

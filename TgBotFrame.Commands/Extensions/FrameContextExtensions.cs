@@ -11,6 +11,11 @@ public static class FrameContextExtensions
             ? (string)obj
             : string.Empty;
 
+    public static long GetBotId(this FrameContext frameContext) =>
+    frameContext.Properties.TryGetValue(ChatInfoMiddleware.BOT_ID_KEY, out object? obj) && obj is not null
+        ? (long)obj
+        : default;
+
     public static CultureInfo GetCultureInfo(this FrameContext frameContext) =>
         frameContext.Properties.TryGetValue(ChatInfoMiddleware.CULTURE_INFO_PROPS_KEY, out object? obj)
         && obj is not null
