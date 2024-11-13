@@ -81,7 +81,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    displayName = x.CategoryKey;
                 }
 
                 return (x.Item1, x.CategoryKey, displayName);
