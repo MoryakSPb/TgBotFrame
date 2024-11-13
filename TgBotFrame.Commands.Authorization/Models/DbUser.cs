@@ -25,6 +25,7 @@ public class DbUser : IEquatable<DbUser>
     {
         entity.HasKey(x => x.Id);
 
+        entity.Property(x => x.Id).ValueGeneratedNever();
         entity.Property(x => x.UserName).HasMaxLength(32).IsUnicode();
         entity.Property(x => x.FirstName).HasMaxLength(64).IsUnicode();
         entity.Property(x => x.LastName).HasMaxLength(64).IsUnicode();
