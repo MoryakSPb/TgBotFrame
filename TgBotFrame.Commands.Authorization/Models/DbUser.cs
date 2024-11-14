@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TgBotFrame.Data;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
-public class DbUser : IModelEntityScheme<DbUser>, IEquatable<DbUser>
+public class DbUser : IEntityTypeConfiguration<DbUser>, IEquatable<DbUser>
 {
     public required long Id { get; init; }
 
@@ -17,12 +16,12 @@ public class DbUser : IModelEntityScheme<DbUser>, IEquatable<DbUser>
     [MaxLength(64)]
     public string? LastName { get; set; } = string.Empty;
 
-    public IList<DbBan> Bans { get; set; } = null!;
+    public IList<DbBan> Bans { get; init; } = null!;
     public IList<DbRole> Roles { get; init; } = null!;
 
     public bool Equals(DbUser? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
 
-    public static void EntityBuild(EntityTypeBuilder<DbUser> entity)
+    public void Configure(EntityTypeBuilder<DbUser> entity)
     {
         entity.HasKey(x => x.Id);
 

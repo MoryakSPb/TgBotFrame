@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TgBotFrame.Data;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
-public class DbRole : IModelEntityScheme<DbRole>, IEquatable<DbRole>
+public class DbRole : IEntityTypeConfiguration<DbRole>, IEquatable<DbRole>
 {
     public int Id { get; init; }
 
@@ -17,7 +16,7 @@ public class DbRole : IModelEntityScheme<DbRole>, IEquatable<DbRole>
 
     public bool Equals(DbRole? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
 
-    public static void EntityBuild(EntityTypeBuilder<DbRole> entity)
+    public void Configure(EntityTypeBuilder<DbRole> entity)
     {
         entity.HasKey(x => x.Id);
         entity.HasAlternateKey(x => x.Name);

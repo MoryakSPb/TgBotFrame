@@ -1,8 +1,9 @@
-﻿using System.Buffers.Binary;
+﻿#if !NET9_0_OR_GREATER
+using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace TgBotFrame.Data;
+namespace TgBotFrame.Utility;
 
 public static class UUIDv7
 {
@@ -61,3 +62,4 @@ public static class UUIDv7
         return new(result, true);
     }
 }
+#endif

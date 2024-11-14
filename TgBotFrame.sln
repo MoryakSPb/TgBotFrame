@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBotFrame.Commands.RateLim
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBotFrame.Example", "TgBotFrame.Example\TgBotFrame.Example.csproj", "{5AA2078C-51CC-45D0-9173-7FD1D54250F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBotFrame.Data", "TgBotFrame.Data\TgBotFrame.Data.csproj", "{F9AD8893-C44C-4B8E-85B4-40980E2C32DE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{1CC7B866-A6F7-4065-A1A9-3968AFA364AA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -63,10 +61,6 @@ Global
 		{5AA2078C-51CC-45D0-9173-7FD1D54250F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA2078C-51CC-45D0-9173-7FD1D54250F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AA2078C-51CC-45D0-9173-7FD1D54250F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9AD8893-C44C-4B8E-85B4-40980E2C32DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9AD8893-C44C-4B8E-85B4-40980E2C32DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9AD8893-C44C-4B8E-85B4-40980E2C32DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9AD8893-C44C-4B8E-85B4-40980E2C32DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12AFF810-DA1C-495C-98AC-C695C2BF2580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{12AFF810-DA1C-495C-98AC-C695C2BF2580}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12AFF810-DA1C-495C-98AC-C695C2BF2580}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,7 +70,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = ru-RU
 		SolutionGuid = {AD885575-B356-41FC-92C9-E5987C15F54D}
+		RESX_NeutralResourcesLanguage = ru-RU
 	EndGlobalSection
 EndGlobal

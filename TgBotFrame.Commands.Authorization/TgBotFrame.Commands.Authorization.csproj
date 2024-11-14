@@ -35,7 +35,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
-	  <ProjectReference Include="..\TgBotFrame.Data\TgBotFrame.Data.csproj" />
 	  <ProjectReference Include="..\TgBotFrame\TgBotFrame.csproj" />
 	</ItemGroup>
 

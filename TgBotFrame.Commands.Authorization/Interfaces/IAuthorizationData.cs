@@ -19,9 +19,6 @@ public interface IAuthorizationData
 
     static void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<DbRole>(DbRole.EntityBuild);
-        modelBuilder.Entity<DbRoleMember>(DbRoleMember.EntityBuild);
-        modelBuilder.Entity<DbUser>(DbUser.EntityBuild);
-        modelBuilder.Entity<DbBan>(DbBan.EntityBuild);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IAuthorizationData).Assembly);
     }
 }

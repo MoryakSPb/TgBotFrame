@@ -1,12 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TgBotFrame.Data;
+using TgBotFrame.Utility;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
-public class DbBan : IModelEntityScheme<DbBan>, IEquatable<DbBan>
+public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 {
-    public Guid Id { get; init; } = UUIDv7.NewUUIDv7Fast();
+    public Guid Id { get; init; }
+#if NET9_0_OR_GREATER
+    = Guid.CreateVersion7();
+#else
+    = UUIDv7.NewUUIDv7Fast();
+#endif
+
     public required long UserId { get; init; }
     public required DateTime Until { get; init; } = DateTime.MaxValue;
 
@@ -17,7 +23,7 @@ public class DbBan : IModelEntityScheme<DbBan>, IEquatable<DbBan>
 
     public bool Equals(DbBan? other) => other is not null && (ReferenceEquals(this, other) || Id.Equals(other.Id));
 
-    public static void EntityBuild(EntityTypeBuilder<DbBan> entity)
+    public void Configure(EntityTypeBuilder<DbBan> entity)
     {
         entity.HasKey(x => x.Id);
 

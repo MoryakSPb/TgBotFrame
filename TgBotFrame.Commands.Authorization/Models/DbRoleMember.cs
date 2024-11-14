@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TgBotFrame.Data;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
-public class DbRoleMember : IModelEntityScheme<DbRoleMember>, IEquatable<DbRoleMember>
+public class DbRoleMember : IEntityTypeConfiguration<DbRoleMember>, IEquatable<DbRoleMember>
 {
     public required int RoleId { get; init; }
     public required long UserId { get; init; }
@@ -15,7 +14,7 @@ public class DbRoleMember : IModelEntityScheme<DbRoleMember>, IEquatable<DbRoleM
                                                && (ReferenceEquals(this, other)
                                                    || (RoleId == other.RoleId && UserId == other.UserId));
 
-    public static void EntityBuild(EntityTypeBuilder<DbRoleMember> entity)
+    public void Configure(EntityTypeBuilder<DbRoleMember> entity)
     {
         entity.HasKey(x => new { x.RoleId, x.UserId });
 
