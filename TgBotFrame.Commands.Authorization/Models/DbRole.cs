@@ -14,8 +14,6 @@ public class DbRole : IEntityTypeConfiguration<DbRole>, IEquatable<DbRole>
 
     public IList<DbUser> Members { get; init; } = null!;
 
-    public bool Equals(DbRole? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
-
     public void Configure(EntityTypeBuilder<DbRole> entity)
     {
         entity.HasKey(x => x.Id);
@@ -28,6 +26,8 @@ public class DbRole : IEntityTypeConfiguration<DbRole>, IEquatable<DbRole>
 
         entity.HasData(new() { Id = -1, Name = @"admin" }, new() { Id = -2, Name = @"ban_list" });
     }
+
+    public bool Equals(DbRole? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
 
     public override int GetHashCode() => Id;
 

@@ -19,8 +19,6 @@ public class DbUser : IEntityTypeConfiguration<DbUser>, IEquatable<DbUser>
     public IList<DbBan> Bans { get; init; } = null!;
     public IList<DbRole> Roles { get; init; } = null!;
 
-    public bool Equals(DbUser? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
-
     public void Configure(EntityTypeBuilder<DbUser> entity)
     {
         entity.HasKey(x => x.Id);
@@ -36,6 +34,8 @@ public class DbUser : IEntityTypeConfiguration<DbUser>, IEquatable<DbUser>
         entity.HasMany(x => x.Bans).WithOne(x => x.User).HasForeignKey(x => x.UserId).IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
+
+    public bool Equals(DbUser? other) => other is not null && (ReferenceEquals(this, other) || Id == other.Id);
 
     public override int GetHashCode() => Id.GetHashCode();
 

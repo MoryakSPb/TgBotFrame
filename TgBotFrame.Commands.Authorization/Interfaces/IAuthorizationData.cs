@@ -17,8 +17,6 @@ public interface IAuthorizationData
                 && x.Until > DateTime.UtcNow,
             cancellationToken);
 
-    static void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    static void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IAuthorizationData).Assembly);
-    }
 }

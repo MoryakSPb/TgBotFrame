@@ -10,10 +10,6 @@ public class DbRoleMember : IEntityTypeConfiguration<DbRoleMember>, IEquatable<D
     public DbRole Role { get; init; } = null!;
     public DbUser User { get; init; } = null!;
 
-    public bool Equals(DbRoleMember? other) => other is not null
-                                               && (ReferenceEquals(this, other)
-                                                   || (RoleId == other.RoleId && UserId == other.UserId));
-
     public void Configure(EntityTypeBuilder<DbRoleMember> entity)
     {
         entity.HasKey(x => new { x.RoleId, x.UserId });
@@ -26,6 +22,10 @@ public class DbRoleMember : IEntityTypeConfiguration<DbRoleMember>, IEquatable<D
         entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
+
+    public bool Equals(DbRoleMember? other) => other is not null
+                                               && (ReferenceEquals(this, other)
+                                                   || (RoleId == other.RoleId && UserId == other.UserId));
 
     public override int GetHashCode() => HashCode.Combine(RoleId, UserId);
 

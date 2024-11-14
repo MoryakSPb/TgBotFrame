@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TgBotFrame.Utility;
 
 namespace TgBotFrame.Commands.Authorization.Models;
 
@@ -8,9 +7,9 @@ public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 {
     public Guid Id { get; init; }
 #if NET9_0_OR_GREATER
-    = Guid.CreateVersion7();
+        = Guid.CreateVersion7();
 #else
-    = UUIDv7.NewUUIDv7Fast();
+    = TgBotFrame.Utility.UUIDv7.NewUUIDv7Fast();
 #endif
 
     public required long UserId { get; init; }
