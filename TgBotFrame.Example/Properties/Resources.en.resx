@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Category_Name_Example" xml:space="preserve">
+    <value>Example of category name</value>
+  </data>
+  <data name="Command_Description_Echo" xml:space="preserve">
+    <value>Responds with the value of the argument</value>
+  </data>
+  <data name="Command_Description_GetId" xml:space="preserve">
+    <value>Responds with the user ID that was replied to by the command</value>
+  </data>
+  <data name="Command_Description_Sum" xml:space="preserve">
+    <value>Calculates the sum of two arguments</value>
+  </data>
+  <data name="ExampleCommands_GetId_NotFound" xml:space="preserve">
+    <value>Message not found, use command as a reply to another message</value>
+  </data>
 </root>

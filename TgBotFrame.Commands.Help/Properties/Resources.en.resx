@@ -180,4 +180,81 @@
   <data name="TimeName" xml:space="preserve">
     <value>time</value>
   </data>
+  <data name="Help_Description" xml:space="preserve">
+    <value>Displays help for commands</value>
+  </data>
+  <data name="Help_Button_Syntax" xml:space="preserve">
+    <value>Arguments format</value>
+  </data>
+  <data name="Help_Button_List" xml:space="preserve">
+    <value>Commands</value>
+  </data>
+  <data name="HelpCommandController_HelpList_WithoutCategory" xml:space="preserve">
+    <value>(no category)</value>
+  </data>
+  <data name="HelpCommandController_HelpCategory_NoCategory" xml:space="preserve">
+    <value>Here are the commands that are not included in any of the categories</value>
+  </data>
+  <data name="HelpCommandController_HelpCategory_NotFound" xml:space="preserve">
+    <value>Category not found</value>
+  </data>
+  <data name="HelpCommandController_HelpCommand_NotFound" xml:space="preserve">
+    <value>Command not found</value>
+  </data>
+  <data name="HelpCommandController_HelpCommand_Overloads" xml:space="preserve">
+    <value>Variants:</value>
+  </data>
+  <data name="HelpCommandController_HelpList_Description" xml:space="preserve">
+    <value>Select a command category</value>
+  </data>
+  <data name="HelpCommandController_HelpList_Title" xml:space="preserve">
+    <value>Available command categories:</value>
+  </data>
+  <data name="HelpCommandController_Help_Title" xml:space="preserve">
+    <value>Welcome to the help menu. Select the necessary menu item:</value>
+  </data>
+  <data name="Command_Description_HelpSyntax" xml:space="preserve">
+    <value>Displays help on command syntax</value>
+  </data>
+  <data name="Command_Description_HelpList" xml:space="preserve">
+    <value>Lists command categories</value>
+  </data>
+  <data name="Command_Description_HelpCommand" xml:space="preserve">
+    <value>Displays help for a command</value>
+  </data>
+  <data name="Command_Description_HelpCategory" xml:space="preserve">
+    <value>Lists commands from the specified category</value>
+  </data>
+  <data name="Command_Description_Help" xml:space="preserve">
+    <value>Displays the main help menu</value>
+  </data>
+  <data name="CmdTitle" xml:space="preserve">
+    <value>Commands</value>
+  </data>
+  <data name="Category_Name_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Category_Description_Help" xml:space="preserve">
+    <value>This category contains help commands. Most of these commands can be used without entering them manually, using the menu buttons from the help command</value>
+  </data>
+  <data name="HelpCommandController_HelpSyntax_Title" xml:space="preserve">
+    <value>Bot commands accept two types of values: commands and arguments\.
+A command is an identifier of a specific action that the bot should perform\. Command identifiers are case-insensitive: you can use both lowercase and uppercase letters\.
+Parameters are the data required to perform an action\.
+
+Any command begins with the `/` symbol; immediately after the symbol comes the
+command identifier\.
+Parameters are separated from each other and the command identifier by spaces\.
+For example: the bot will respond to the message `/HelpCommand Help` with help on the `Help` command\.
+
+Argument formats:
+
+\- Boolean: `true` or `false` values;
+\- Integer: a whole decimal number, such as `123`;
+\- Fractional: a fractional number, the fractional part can be separated from the whole by `\.` or `,`;
+\- String: a set of characters, if you need to include problems in it, you can put the string in quotes;
+\- Interval: a time interval in the form `HH:MM:SS` or `HH:MM`, you can also enter an integer number of days;
+\- Date: a date in the format `DD\.MM\.YYYY` or `YYYY\-MM\-DD`;
+\- Time: time in the format `HH:MM:SS` or `HH:MM`\.</value>
+  </data>
 </root>

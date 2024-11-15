@@ -123,4 +123,84 @@
   <data name="RoleManagementController_Add_NotFound" xml:space="preserve">
     <value>Role "{0}" is not exist</value>
   </data>
+  <data name="AuthorizationMiddleware_Denied" xml:space="preserve">
+    <value>Command execution denied, you do not have the required roles</value>
+  </data>
+  <data name="Category_Description_Roles" xml:space="preserve">
+    <value>These commands allow you to manage roles and perform certain actions with their members, such as mentioning them</value>
+  </data>
+  <data name="MentionController_Mention" xml:space="preserve">
+    <value>, your role is mentioned</value>
+  </data>
+  <data name="MentionController_Mention_EditResult" xml:space="preserve">
+    <value>The ability to mention role {0} is </value>
+  </data>
+  <data name="MentionController_Mention_ListTitle" xml:space="preserve">
+    <value>Ability to mention role members:</value>
+  </data>
+  <data name="MentionController_Mention_NotFound" xml:space="preserve">
+    <value>The role does not exist or has no members</value>
+  </data>
+  <data name="RoleManagementController_Add_Success" xml:space="preserve">
+    <value>User {0} has been assigned the role "{1}"</value>
+  </data>
+  <data name="RoleManagementController_Remove_NotFound" xml:space="preserve">
+    <value>User {0} is not assigned the role "{1}" or role does not exist</value>
+  </data>
+  <data name="RoleManagementController_Remove_Success" xml:space="preserve">
+    <value>User {0} no longer has role "{1}"</value>
+  </data>
+  <data name="BanController_Ban_Result" xml:space="preserve">
+    <value>User @{0} has been banned until {1:F}</value>
+  </data>
+  <data name="BanController_UnBan_Result" xml:space="preserve">
+    <value>User {0} has been unbanned</value>
+  </data>
+  <data name="BanController_BanInfo_NotFound" xml:space="preserve">
+    <value>This user has no bans</value>
+  </data>
+  <data name="BanController_BanInfo_Until" xml:space="preserve">
+    <value>Until </value>
+  </data>
+  <data name="BanController_BanInfo_Infinite" xml:space="preserve">
+    <value>Forever</value>
+  </data>
+  <data name="Category_Name_Ban" xml:space="preserve">
+    <value>Bans</value>
+  </data>
+  <data name="Category_Description_Ban" xml:space="preserve">
+    <value>These commands allow you to manage user bans</value>
+  </data>
+  <data name="MentionController_Mention_Off" xml:space="preserve">
+    <value> **disable** </value>
+  </data>
+  <data name="MentionController_Mention_OffShort" xml:space="preserve">
+    <value> *OFF* </value>
+  </data>
+  <data name="MentionController_Mention_On" xml:space="preserve">
+    <value> **enabled** </value>
+  </data>
+  <data name="MentionController_Mention_OnShort" xml:space="preserve">
+    <value> **ON** </value>
+  </data>
+  <data name="Command_Description_UnBan" xml:space="preserve">
+    <value>Prematurely removes ban from the user whose ID was specified</value>
+  </data>
+  <data name="Command_Description_BanInfo" xml:space="preserve">
+    <value>Replies with a list of blocked users. By specifying the user ID as an integer parameter, the bot responds with blocking details</value>
+  </data>
+  <data name="Command_Description_Ban" xml:space="preserve">
+    <value>Blocks a user inside the bot, preventing them from executing commands. The various command options assume that the integer is the user ID, the duration is the blocking time, and the text is a description of the blocking reason for administrators. If the blocking time is not specified, the blocking is assumed to be permanent.</value>
+  </data>
+  <data name="Command_Description_AddRole" xml:space="preserve">
+    <value>Assigns a user to the specified role.
+Specify the role name first, then the user ID.</value>
+  </data>
+  <data name="Command_Description_Mention" xml:space="preserve">
+    <value>Specify the role name as the first argument to mention all members of the role. Calling the command without arguments will cause the bot to respond with a list of roles whose members can be mentioned. Calling the command with two arguments allows bot administrators to control whether a role can be mentioned. The first argument is the role name, and the second is the flag for whether a role can be mentioned.</value>
+  </data>
+  <data name="Command_Description_RemoveRole" xml:space="preserve">
+    <value>Removes a user from membership in a role.
+Specify the role name first, then the user ID.</value>
+  </data>
 </root>

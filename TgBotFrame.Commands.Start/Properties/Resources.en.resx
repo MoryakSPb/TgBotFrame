@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Category_Name_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Category_Description_Start" xml:space="preserve">
+    <value>This category contains the command to start using the bot</value>
+  </data>
+  <data name="Command_Description_Start" xml:space="preserve">
+    <value>Displays a welcome message</value>
+  </data>
+  <data name="StartDefaultText" xml:space="preserve">
+    <value>This is a standard description of a bot created using TgBotFrame</value>
+  </data>
+  <data name="Start_Description" xml:space="preserve">
+    <value>Displays a welcome message</value>
+  </data>
 </root>

@@ -189,4 +189,28 @@
   <data name="UseHelpMessage" xml:space="preserve">
     <value>Use the /help@{0} command to get help</value>
   </data>
+  <data name="BanController_Ban_Result" xml:space="preserve">
+    <value>User blocked</value>
+  </data>
+  <data name="ArgFormatText" xml:space="preserve">
+    <value>123</value>
+  </data>
+  <data name="BanController_Ban_Result_Forever" xml:space="preserve">
+    <value> **forever** </value>
+  </data>
+  <data name="BanController_Ban_Until" xml:space="preserve">
+    <value> until </value>
+  </data>
+  <data name="BanController_UnBan_NotFound" xml:space="preserve">
+    <value>The user does not have an active lock</value>
+  </data>
+  <data name="BanController_UnBan_Result" xml:space="preserve">
+    <value>The user has been unblocked</value>
+  </data>
+  <data name="ArgsTitle" xml:space="preserve">
+    <value>Arguments</value>
+  </data>
+  <data name="ArgFormatTitle" xml:space="preserve">
+    <value>Arguments format</value>
+  </data>
 </root>

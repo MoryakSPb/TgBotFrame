@@ -152,7 +152,7 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Приписывает к указанный роли пользователя.
-        ///Сначала укажите название роли, а затем идентификатор пользователя.
+        ///Сначала укажите название роли, а затем идентификатор пользователя..
         /// </summary>
         public static string Command_Description_AddRole {
             get {
