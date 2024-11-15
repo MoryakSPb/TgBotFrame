@@ -9,6 +9,9 @@ using TgBotFrame.Middleware;
 
 namespace TgBotFrame.Services;
 
+/// <summary>
+/// Базовый сервис TgBotFrame. Выполняет запуск прослушивания обновлений, создание очереди выполнения ПО промежуточного слоя и инициирует обработку полученных обновлений
+/// </summary>
 public class BotService(
     ITelegramBotClient botClient,
     ILogger<BotService> logger,

@@ -11,9 +11,14 @@ using TgBotFrame.Utility;
 
 namespace TgBotFrame.Injection;
 
-[ExcludeFromCodeCoverage]
 public static class InjectionExtensions
 {
+    /// <summary>
+    /// Добавляет базовые сервисы для работы других компонентов TgBotFrame
+    /// </summary>
+    /// <param name="serviceCollection">Коллекция сервисов</param>
+    /// <returns>Экземпляр из аргумента serviceCollection</returns>
+    /// <exception cref="KeyNotFoundException">ITelegramBotClient не зарегистрирован</exception>
     public static IServiceCollection AddTgBotFrameCore(this IServiceCollection serviceCollection)
     {
         if (serviceCollection.All(x =>
@@ -25,12 +30,18 @@ public static class InjectionExtensions
         serviceCollection.AddMetrics();
         serviceCollection.TryAddSingleton<FrameMetricsService>();
 
+        serviceCollection.TryAddSingleton<BotService>();
         serviceCollection.TryAddEnumerable(new ServiceDescriptor(typeof(IHostedService), typeof(BotService),
             ServiceLifetime.Singleton));
 
         return serviceCollection;
     }
 
+    /// <summary>
+    /// Добавляет HttpClient для TgBotFrame, поддерживающий повторение и лимит запросов
+    /// </summary>
+    /// <param name="serviceCollection">Коллекция сервисов</param>
+    /// <returns>Экземпляр из аргумента serviceCollection</returns>
     public static IServiceCollection AddTelegramHttpClient(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<TelegramRateLimitedHandler>();

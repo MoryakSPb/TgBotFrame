@@ -4,6 +4,9 @@ using System.Threading.RateLimiting;
 
 namespace TgBotFrame.Utility;
 
+/// <summary>
+/// Обработчик для HttpClient, отправляющий запросы к API Telegram
+/// </summary>
 public sealed class TelegramRateLimitedHandler : DelegatingHandler
 {
     private static readonly FixedWindowRateLimiter _limiter =
