@@ -9,7 +9,7 @@ public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 #if NET9_0_OR_GREATER
         = Guid.CreateVersion7();
 #else
-    = TgBotFrame.Utility.UUIDv7.NewUUIDv7Fast();
+        = Guid.NewGuid();
 #endif
 
     public required long UserId { get; init; }

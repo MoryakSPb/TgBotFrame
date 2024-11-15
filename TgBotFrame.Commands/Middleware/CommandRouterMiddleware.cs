@@ -47,7 +47,7 @@ public sealed class CommandRouterMiddleware(
             return;
         }
 
-        (MethodInfo? methodInfo, int invalidArgIndex) = GetMethod(allMethods, update.Message!, out object?[] args);
+        (MethodInfo? methodInfo, int invalidArgIndex) = GetMethod(allMethods, out object?[] args);
         if (methodInfo is null)
         {
             switch (invalidArgIndex)
@@ -78,7 +78,7 @@ public sealed class CommandRouterMiddleware(
         context.Properties[COMMAND_METHOD_KEY] = methodInfo;
         context.Properties[COMMAND_ARGS_KEY] = args;
 
-        logger.LogInformation("User {userId} enter command {commandName}({commandArgs})",
+        logger.LogInformation(@"User {userId} enter command {commandName}({commandArgs})",
             context.GetUserId(),
             context.GetCommandName(),
             string.Join(", ", args.Select(y => y?.GetType()?.Name)));
@@ -89,7 +89,7 @@ public sealed class CommandRouterMiddleware(
 
     private async Task SendCommandNotFound(Update update, FrameContext context, CancellationToken ct = default)
     {
-        logger.LogInformation("User <{userId}> enter unknown command {commandName}",
+        logger.LogInformation(@"User <{userId}> enter unknown command {commandName}",
             context.GetUserId(),
             context.GetCommandName());
         await botClient.SendMessage(update.Message!.Chat,
@@ -106,7 +106,7 @@ public sealed class CommandRouterMiddleware(
 
     private async Task SendInvalidArgsCount(Update update, FrameContext context, CancellationToken ct = default)
     {
-        logger.LogInformation("User <{userId}> enter command \"{commandName}\" with invalid args count: {args}",
+        logger.LogInformation("""User <{userId}> enter command "{commandName}" with invalid args count: {args}""",
             context.GetUserId(),
             context.GetCommandName(),
             Environment.NewLine + string.Join(Environment.NewLine, context.GetCommandArgsRaw()));
@@ -123,7 +123,9 @@ public sealed class CommandRouterMiddleware(
 
     private async Task SendAmbiguousCall(Update update, FrameContext context, CancellationToken ct = default)
     {
-        logger.LogWarning(@"User <{userId}> enter ambiguous command ""{commandName}""",
+        logger.LogWarning("""
+                          User <{userId}> enter ambiguous command "{commandName}"
+                          """,
             context.GetUserId(),
             context.GetCommandName());
         await botClient.SendMessage(update.Message!.Chat,
@@ -141,7 +143,9 @@ public sealed class CommandRouterMiddleware(
         CancellationToken ct)
     {
         logger.LogWarning(
-            @"User <{userId}> enter command ""{commandName}"" with invalid format in arg #{argNum:D}: ""{arg}""",
+            """
+            User <{userId}> enter command "{commandName}" with invalid format in arg #{argNum:D}: "{arg}"
+            """,
             context.GetUserId(),
             context.GetCommandName(),
             invalidArgIndex,
@@ -161,7 +165,7 @@ public sealed class CommandRouterMiddleware(
     }
 
     private (MethodInfo?, int invalidArgIndex) GetMethod(
-        in FrozenDictionary<MethodInfo, ParameterInfo[]> allMethods, in Message message, out object?[] args)
+        in FrozenDictionary<MethodInfo, ParameterInfo[]> allMethods, out object?[] args)
     {
         args = [];
         KeyValuePair<MethodInfo, ParameterInfo[]> method;
@@ -182,7 +186,7 @@ public sealed class CommandRouterMiddleware(
 
         List<int> candidatesToRemove = new(candidates.Count);
 
-        int mentionCounter = 0;
+        //int mentionCounter = 0;
         for (int i = 0; i < CommandArgumentsRaw.Count; i++)
         {
             string rawArg = CommandArgumentsRaw[i];
@@ -197,6 +201,7 @@ public sealed class CommandRouterMiddleware(
                 else if (parameter.ParameterType == typeof(User))
                 {
                     throw new NotSupportedException();
+/*
                     MessageEntity? mention = message.Entities
                         ?.Where(x => x.Type == MessageEntityType.Mention)
                         .Skip(mentionCounter).FirstOrDefault();
@@ -221,6 +226,7 @@ public sealed class CommandRouterMiddleware(
                     }
 
                     mentionCounter++;
+*/
                 }
                 else if (parameter.ParameterType.GetInterfaces()
                          .Contains(typeof(IParsable<>).MakeGenericType(parameter.ParameterType)))
