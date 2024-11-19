@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TgBotFrame.Commands;
+﻿using TgBotFrame.Commands;
 using TgBotFrame.Commands.Attributes;
 
 namespace TgBotFrame.Tests.Controllers;
@@ -7,7 +6,7 @@ namespace TgBotFrame.Tests.Controllers;
 [CommandController]
 public sealed class SimpleTestController : CommandControllerBase
 {
-    public static int Count { get; private set; } = 0;
+    public static int Count { get; private set; }
 
     [Command(nameof(Inc))]
     public void Inc() => Count++;

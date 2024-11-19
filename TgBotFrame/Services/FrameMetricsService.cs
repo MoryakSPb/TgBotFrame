@@ -4,7 +4,7 @@ using Telegram.Bot.Types.Enums;
 namespace TgBotFrame.Services;
 
 /// <summary>
-/// Сервис, предоставляющий базовые метрики для TgBotFrame
+///     Сервис, предоставляющий базовые метрики для TgBotFrame
 /// </summary>
 public sealed class FrameMetricsService : IDisposable
 {
@@ -22,7 +22,7 @@ public sealed class FrameMetricsService : IDisposable
     public void Dispose() => _meter.Dispose();
 
     /// <summary>
-    /// Увеличивает на 1 счетчик обработанных обновлений Telegram
+    ///     Увеличивает на 1 счетчик обработанных обновлений Telegram
     /// </summary>
     /// <param name="updateType">Тип обновления</param>
     public void IncUpdatesHandled(in UpdateType updateType) =>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 using TgBotFrame.Commands.Injection;
 using TgBotFrame.Services;
 using TgBotFrame.Tests.Controllers;
@@ -12,16 +11,14 @@ namespace TgBotFrame.Tests;
 public class CommandSimpleTest
 {
     private readonly Random _random = new(1710491186);
+
     [Fact]
     public async Task IncTest()
     {
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<ITelegramBotClient, StubTelegramBotClient>();
         services.AddLogging(builder => builder.AddConsole());
-        services.AddTgBotFrameCommands(builder =>
-        {
-            builder.TryAddCommandController<SimpleTestController>();
-        });
+        services.AddTgBotFrameCommands(builder => { builder.TryAddCommandController<SimpleTestController>(); });
         ServiceProvider provider = services.BuildServiceProvider(true);
         BotService botService = provider.GetRequiredService<BotService>();
         SimpleTestController.Reset();
@@ -48,10 +45,7 @@ public class CommandSimpleTest
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<ITelegramBotClient, StubTelegramBotClient>();
         services.AddLogging(builder => builder.AddConsole());
-        services.AddTgBotFrameCommands(builder =>
-        {
-            builder.TryAddCommandController<SimpleTestController>();
-        });
+        services.AddTgBotFrameCommands(builder => { builder.TryAddCommandController<SimpleTestController>(); });
         ServiceProvider provider = services.BuildServiceProvider(true);
         BotService botService = provider.GetRequiredService<BotService>();
         SimpleTestController.Reset();
@@ -79,10 +73,7 @@ public class CommandSimpleTest
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<ITelegramBotClient, StubTelegramBotClient>();
         services.AddLogging(builder => builder.AddConsole());
-        services.AddTgBotFrameCommands(builder =>
-        {
-            builder.TryAddCommandController<SimpleTestController>();
-        });
+        services.AddTgBotFrameCommands(builder => { builder.TryAddCommandController<SimpleTestController>(); });
         ServiceProvider provider = services.BuildServiceProvider(true);
         BotService botService = provider.GetRequiredService<BotService>();
         SimpleTestController.Reset();

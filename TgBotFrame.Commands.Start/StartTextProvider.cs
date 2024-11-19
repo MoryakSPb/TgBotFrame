@@ -10,10 +10,7 @@ public class StartTextProvider
 
     private readonly string? _staticText;
 
-    internal StartTextProvider(string text)
-    {
-        _staticText = text;
-    }
+    internal StartTextProvider(string text) => _staticText = text;
 
     internal StartTextProvider(ResourceManager resourceManager, string resourceKey)
     {

@@ -49,7 +49,8 @@ public class DbUser : IEntityTypeConfiguration<DbUser>, IEquatable<DbUser>
             : @$"{firstName}{lastName}";
     }
 
-    public override bool Equals(object? obj) => obj is not null
-                                                && (ReferenceEquals(this, obj)
-                                                    || (obj.GetType() == GetType() && Equals((DbUser)obj)));
+    public override bool Equals(object? obj) =>
+        obj is not null
+        && (ReferenceEquals(this, obj)
+            || (obj.GetType() == GetType() && Equals((DbUser)obj)));
 }

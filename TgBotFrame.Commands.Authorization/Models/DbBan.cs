@@ -39,7 +39,8 @@ public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 
     public override int GetHashCode() => Id.GetHashCode();
 
-    public override bool Equals(object? obj) => obj is not null
-                                                && (ReferenceEquals(this, obj)
-                                                    || (obj.GetType() == GetType() && Equals((DbBan)obj)));
+    public override bool Equals(object? obj) =>
+        obj is not null
+        && (ReferenceEquals(this, obj)
+            || (obj.GetType() == GetType() && Equals((DbBan)obj)));
 }

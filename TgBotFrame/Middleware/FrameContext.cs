@@ -3,12 +3,12 @@
 namespace TgBotFrame.Middleware;
 
 /// <summary>
-/// Запись для передачи состояния между ПО промежуточного слоя
+///     Запись для передачи состояния между ПО промежуточного слоя
 /// </summary>
 public sealed record FrameContext : IDisposable
 {
     /// <summary>
-    /// Словарь значений
+    ///     Словарь значений
     /// </summary>
     [JsonExtensionData]
     public IDictionary<string, object?> Properties { get; } = new Dictionary<string, object?>();

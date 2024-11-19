@@ -1,14 +1,15 @@
 ﻿namespace TgBotFrame.Middleware;
 
 /// <summary>
-/// Базовый класс для ПО промежуточного слоя
+///     Базовый класс для ПО промежуточного слоя
 /// </summary>
 public abstract class FrameMiddleware : IDisposable
 {
     /// <summary>
-    /// Делегат, представляющий вызов InvokeAsync следующего ПО промежуточного слоя
+    ///     Делегат, представляющий вызов InvokeAsync следующего ПО промежуточного слоя
     /// </summary>
     protected internal FrameUpdateDelegate Next { get; internal set; } = null!;
+
     public static FrameUpdateDelegate Empty { get; } = (_, _, _) => Task.CompletedTask;
 
     public void Dispose()
@@ -18,7 +19,8 @@ public abstract class FrameMiddleware : IDisposable
     }
 
     /// <summary>
-    /// Метод, определенный в наследниках, выполняющий необходимые действия. Вызов Next необходим для перехода к следующему ПО промежуточного соля 
+    ///     Метод, определенный в наследниках, выполняющий необходимые действия. Вызов Next необходим для перехода к следующему
+    ///     ПО промежуточного соля
     /// </summary>
     /// <param name="update">Обновление Telegram</param>
     /// <param name="context">Объект с сохраненным состоянием обработки обновления</param>

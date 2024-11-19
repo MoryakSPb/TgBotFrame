@@ -9,13 +9,14 @@ public interface IAuthorizationData
 
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-    Task<bool> IsUserIdBanned(long userId, CancellationToken cancellationToken = default) => Bans
-        .AsNoTracking()
-        .IgnoreQueryFilters()
-        .AnyAsync(x =>
-                x.UserId == userId
-                && x.Until > DateTime.UtcNow,
-            cancellationToken);
+    Task<bool> IsUserIdBanned(long userId, CancellationToken cancellationToken = default) =>
+        Bans
+            .AsNoTracking()
+            .IgnoreQueryFilters()
+            .AnyAsync(x =>
+                    x.UserId == userId
+                    && x.Until > DateTime.UtcNow,
+                cancellationToken);
 
     static void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IAuthorizationData).Assembly);

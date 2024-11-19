@@ -7,7 +7,8 @@ namespace TgBotFrame.Commands.Extensions;
 public static class FrameContextExtensions
 {
     public static string GetBotUsername(this FrameContext frameContext) =>
-        frameContext.Properties.TryGetValue(ChatInfoMiddleware.BOT_USERNAME_KEY, out object? obj) && obj is not null
+        frameContext.Properties.TryGetValue(ChatInfoMiddleware.BOT_USERNAME_KEY, out object? obj)
+        && obj is not null
             ? (string)obj
             : string.Empty;
 

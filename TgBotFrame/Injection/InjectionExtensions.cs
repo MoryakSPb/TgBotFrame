@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Polly;
@@ -14,7 +13,7 @@ namespace TgBotFrame.Injection;
 public static class InjectionExtensions
 {
     /// <summary>
-    /// Добавляет базовые сервисы для работы других компонентов TgBotFrame
+    ///     Добавляет базовые сервисы для работы других компонентов TgBotFrame
     /// </summary>
     /// <param name="serviceCollection">Коллекция сервисов</param>
     /// <returns>Экземпляр из аргумента serviceCollection</returns>
@@ -38,7 +37,7 @@ public static class InjectionExtensions
     }
 
     /// <summary>
-    /// Добавляет HttpClient для TgBotFrame, поддерживающий повторение и лимит запросов
+    ///     Добавляет HttpClient для TgBotFrame, поддерживающий повторение и лимит запросов
     /// </summary>
     /// <param name="serviceCollection">Коллекция сервисов</param>
     /// <returns>Экземпляр из аргумента serviceCollection</returns>

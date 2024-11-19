@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
 using TgBotFrame.Commands.Extensions;
 using TgBotFrame.Commands.Properties;
 using TgBotFrame.Commands.Services;
@@ -201,32 +200,32 @@ public sealed class CommandRouterMiddleware(
                 else if (parameter.ParameterType == typeof(User))
                 {
                     throw new NotSupportedException();
-/*
-                    MessageEntity? mention = message.Entities
-                        ?.Where(x => x.Type == MessageEntityType.Mention)
-                        .Skip(mentionCounter).FirstOrDefault();
-                    if (mention is null)
-                    {
-                        if (message.ReplyToMessage?.From is not null && mentionCounter == 0)
-                        {
-                            pair.Value.Args[i] = message.ReplyToMessage.From;
-                        }
-                        else
-                        {
-                            candidatesToRemove.Add(pair.Key);
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if (mention.User is not null)
-                        {
-                            pair.Value.Args[i] = mention.User;
-                        }
-                    }
+                    /*
+                                        MessageEntity? mention = message.Entities
+                                            ?.Where(x => x.Type == MessageEntityType.Mention)
+                                            .Skip(mentionCounter).FirstOrDefault();
+                                        if (mention is null)
+                                        {
+                                            if (message.ReplyToMessage?.From is not null && mentionCounter == 0)
+                                            {
+                                                pair.Value.Args[i] = message.ReplyToMessage.From;
+                                            }
+                                            else
+                                            {
+                                                candidatesToRemove.Add(pair.Key);
+                                                continue;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (mention.User is not null)
+                                            {
+                                                pair.Value.Args[i] = mention.User;
+                                            }
+                                        }
 
-                    mentionCounter++;
-*/
+                                        mentionCounter++;
+                    */
                 }
                 else if (parameter.ParameterType.GetInterfaces()
                          .Contains(typeof(IParsable<>).MakeGenericType(parameter.ParameterType)))

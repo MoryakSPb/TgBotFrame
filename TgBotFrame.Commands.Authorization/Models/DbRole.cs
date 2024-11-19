@@ -31,9 +31,10 @@ public class DbRole : IEntityTypeConfiguration<DbRole>, IEquatable<DbRole>
 
     public override int GetHashCode() => Id;
 
-    public override bool Equals(object? obj) => obj is not null
-                                                && (ReferenceEquals(this, obj)
-                                                    || (obj.GetType() == GetType() && Equals((DbRole)obj)));
+    public override bool Equals(object? obj) =>
+        obj is not null
+        && (ReferenceEquals(this, obj)
+            || (obj.GetType() == GetType() && Equals((DbRole)obj)));
 
     public override string ToString() => Name;
 }

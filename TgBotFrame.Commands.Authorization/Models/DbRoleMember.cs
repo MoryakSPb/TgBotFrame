@@ -23,9 +23,10 @@ public class DbRoleMember : IEntityTypeConfiguration<DbRoleMember>, IEquatable<D
             .OnDelete(DeleteBehavior.Cascade);
     }
 
-    public bool Equals(DbRoleMember? other) => other is not null
-                                               && (ReferenceEquals(this, other)
-                                                   || (RoleId == other.RoleId && UserId == other.UserId));
+    public bool Equals(DbRoleMember? other) =>
+        other is not null
+        && (ReferenceEquals(this, other)
+            || (RoleId == other.RoleId && UserId == other.UserId));
 
     public override int GetHashCode() => HashCode.Combine(RoleId, UserId);
 
