@@ -3,7 +3,7 @@ using TgBotFrame.Commands.Attributes;
 
 namespace TgBotFrame.Tests.Controllers;
 
-[CommandController]
+[CommandController("Simple")]
 public sealed class SimpleTestController : CommandControllerBase
 {
     public static int Count { get; private set; }
