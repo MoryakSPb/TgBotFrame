@@ -75,8 +75,8 @@ public static class ResourcesExtensions
         PropertyInfo? property = resourcesType?.GetProperty(
             "ResourceManager",
             BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Static);
-        var method = property?.GetMethod;
-        var manager = (ResourceManager?)method?.Invoke(null, null);
+        MethodInfo? method = property?.GetMethod;
+        ResourceManager? manager = (ResourceManager?)method?.Invoke(null, null);
         return manager;
     }
 }
