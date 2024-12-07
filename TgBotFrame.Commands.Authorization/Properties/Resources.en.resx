@@ -133,7 +133,7 @@
     <value>, your role is mentioned</value>
   </data>
   <data name="MentionController_Mention_EditResult" xml:space="preserve">
-    <value>The ability to mention role {0} is </value>
+    <value>The ability to mention role {0} is</value>
   </data>
   <data name="MentionController_Mention_ListTitle" xml:space="preserve">
     <value>Ability to mention role members:</value>

@@ -122,7 +122,7 @@
     <value>, ваша роль упомянута</value>
   </data>
   <data name="MentionController_Mention_EditResult" xml:space="preserve">
-    <value>Возможность упоминания роли {0} теперь </value>
+    <value>Возможность упоминания роли {0} теперь</value>
   </data>
   <data name="MentionController_Mention_ListTitle" xml:space="preserve">
     <value>Возможность упоминания участников ролей:</value>

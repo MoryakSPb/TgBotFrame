@@ -65,7 +65,6 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
             return;
         }
 
-
         await botClient.SendMessage(
             Context.GetChatId()!,
             string.Join(@", ", users.Select(x => x.ToString()))
@@ -106,7 +105,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         string text =
-            ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!
+            string.Format(ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!, role.Name)
             + (enable
                 ? ResourceManager.GetString(nameof(MentionController_Mention_On), Context.GetCultureInfo())!
                 : ResourceManager.GetString(nameof(MentionController_Mention_Off),
@@ -115,7 +114,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
             Context.GetChatId()!,
             text,
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.None,
+            parseMode: ParseMode.MarkdownV2,
             replyParameters: messageId is not null
                 ? new()
                 {

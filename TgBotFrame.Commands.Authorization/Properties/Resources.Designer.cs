@@ -226,7 +226,7 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Возможность упоминания роли {0} теперь .
+        ///   Looks up a localized string similar to Возможность упоминания роли {0} теперь.
         /// </summary>
         public static string MentionController_Mention_EditResult {
             get {
