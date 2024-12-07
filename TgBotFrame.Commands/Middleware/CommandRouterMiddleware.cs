@@ -227,6 +227,17 @@ public sealed class CommandRouterMiddleware(
                                         mentionCounter++;
                     */
                 }
+                else if (parameter.ParameterType == typeof(bool))
+                {
+                    if (bool.TryParse(rawArg, out bool result))
+                    {
+                        pair.Value.Args[i] = result;
+                    }
+                    else
+                    {
+                        candidatesToRemove.Add(pair.Key);
+                    }
+                }
                 else if (parameter.ParameterType.GetInterfaces()
                          .Contains(typeof(IParsable<>).MakeGenericType(parameter.ParameterType)))
                 {
