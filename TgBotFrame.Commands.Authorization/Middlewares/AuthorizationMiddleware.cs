@@ -37,7 +37,7 @@ public class AuthorizationMiddleware(
                     context.GetChatId()!,
                     ResourceManager.GetString(nameof(AuthorizationMiddleware_Denied), context.GetCultureInfo())!,
                     messageThreadId: context.GetThreadId(),
-                    parseMode: ParseMode.MarkdownV2,
+                    parseMode: ParseMode.None,
                     replyParameters: messageId is not null
                         ? new()
                         {

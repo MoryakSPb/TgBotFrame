@@ -23,7 +23,7 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                         Context.GetCultureInfo())!,
                     roleName),
                 messageThreadId: Context.GetThreadId(),
-                parseMode: ParseMode.MarkdownV2,
+                parseMode: ParseMode.None,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -46,7 +46,7 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                 ResourceManager.GetString(nameof(RoleManagementController_Add_Success), Context.GetCultureInfo())!,
                 user, roleName),
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -72,7 +72,7 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                     ResourceManager.GetString(nameof(RoleManagementController_Remove_NotFound),
                         Context.GetCultureInfo())!, user, roleName),
                 messageThreadId: Context.GetThreadId(),
-                parseMode: ParseMode.MarkdownV2,
+                parseMode: ParseMode.None,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -92,7 +92,7 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                     Context.GetCultureInfo())!,
                 user, roleName),
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {

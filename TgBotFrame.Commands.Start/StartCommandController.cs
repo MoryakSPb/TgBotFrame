@@ -17,7 +17,7 @@ public class StartCommandController(ITelegramBotClient botClient, StartTextProvi
             Context.GetChatId()!,
             startTextProvider.GetText(Context.GetCultureInfo()),
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {

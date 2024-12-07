@@ -55,7 +55,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
                 Context.GetChatId()!,
                 ResourceManager.GetString(nameof(MentionController_Mention_NotFound), Context.GetCultureInfo())!,
                 messageThreadId: Context.GetThreadId(),
-                parseMode: ParseMode.MarkdownV2,
+                parseMode: ParseMode.None,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -71,7 +71,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
             string.Join(@", ", users.Select(x => x.ToString()))
             + ResourceManager.GetString(nameof(MentionController_Mention), Context.GetCultureInfo())!,
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             cancellationToken: CancellationToken).ConfigureAwait(false);
     }
 
@@ -92,7 +92,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
                         Context.GetCultureInfo())!,
                     roleName),
                 messageThreadId: Context.GetThreadId(),
-                parseMode: ParseMode.MarkdownV2,
+                parseMode: ParseMode.None,
                 replyParameters: messageId is not null
                     ? new()
                     {
@@ -115,7 +115,7 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
             Context.GetChatId()!,
             text,
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {

@@ -19,7 +19,7 @@ public class ExampleCommands(ITelegramBotClient botClient) : CommandControllerBa
             Context.GetChatId()!,
             text,
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -39,7 +39,7 @@ public class ExampleCommands(ITelegramBotClient botClient) : CommandControllerBa
                 ? ResourceManager.GetString(nameof(ExampleCommands_GetId_NotFound), Context.GetCultureInfo())!
                 : userId.Value.ToString("D"),
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {
@@ -57,7 +57,7 @@ public class ExampleCommands(ITelegramBotClient botClient) : CommandControllerBa
             Context.GetChatId()!,
             (left + right).ToString("F"),
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.MarkdownV2,
+            parseMode: ParseMode.None,
             replyParameters: messageId is not null
                 ? new()
                 {
