@@ -91,8 +91,8 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         foreach (var user in dataContext.Bans.Include(x => x.User)
                      .AsNoTracking()
                      .GroupBy(x => x.UserId)
-                     .Select(x => x.MaxBy(y => y.Until))
-                     .Select(x => new { x!.User, x.Until, x.Description }))
+                     .Select(x => x.OrderByDescending(y => y.Until).First())
+                     .Select(x => new { x.User, x.Until, x.Description }))
         {
             text.Append(user.User);
             text.Append('\t');
@@ -120,11 +120,12 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     [Command(nameof(BanInfo))]
     public async Task BanInfo(long userId)
     {
-        DbBan? ban = dataContext.Bans
+        DbBan? ban = await dataContext.Bans
             .AsNoTracking()
             .Include(x => x.User)
             .Where(x => x.UserId == userId)
-            .MaxBy(x => x.Until);
+            .OrderByDescending(x => x.Until)
+            .FirstOrDefaultAsync();
         string result;
         if (ban is not null)
         {
