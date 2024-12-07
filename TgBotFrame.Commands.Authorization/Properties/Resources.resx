@@ -184,4 +184,7 @@
   <data name="Category_Description_Ban" xml:space="preserve">
     <value>Данные команды позволяют управлять блокировками пользователей</value>
   </data>
+  <data name="BanController_UnBan_NotFound" xml:space="preserve">
+    <value>У пользователя нет активных блокировок</value>
+  </data>
 </root>

@@ -54,18 +54,26 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     [Command(nameof(UnBan))]
     public async Task UnBan(long userId)
     {
-        DbBan[] entities = await dataContext.Bans.Where(x => x.UserId == userId).AsTracking().ToArrayAsync()
-            .ConfigureAwait(false);
-        dataContext.Bans.RemoveRange(entities);
-        await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
-        
-        int? messageId = Context.GetMessageId();
-        DbUser? target = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+        int removed = await dataContext.Bans.Where(x => x.UserId == userId)
+            .ExecuteUpdateAsync(x => x.SetProperty(y => y.Until, DateTime.UtcNow)).ConfigureAwait(false);
+        string result;
+        if (removed == 0)
+        {
+            result = ResourceManager.GetString(nameof(BanController_UnBan_NotFound), Context.GetCultureInfo())!;
+        }
+        else
+        {
+            DbUser? target = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId)
+                .ConfigureAwait(false);
+            result = string.Format(
+                ResourceManager.GetString(nameof(BanController_UnBan_Result), Context.GetCultureInfo())!,
+                target?.ToString() ?? userId.ToString(@"D"));
+        }
 
+        int? messageId = Context.GetMessageId();
         await botClient.SendMessage(
             Context.GetChatId()!,
-            string.Format(ResourceManager.GetString(nameof(BanController_UnBan_Result), Context.GetCultureInfo())!,
-                target?.ToString() ?? userId.ToString(@"D")),
+            result,
             messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
