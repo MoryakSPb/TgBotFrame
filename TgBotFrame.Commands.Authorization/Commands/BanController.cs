@@ -58,12 +58,14 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             .ConfigureAwait(false);
         dataContext.Bans.RemoveRange(entities);
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
-
+        
         int? messageId = Context.GetMessageId();
+        DbUser? target = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+
         await botClient.SendMessage(
             Context.GetChatId()!,
             string.Format(ResourceManager.GetString(nameof(BanController_UnBan_Result), Context.GetCultureInfo())!,
-                DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName())),
+                target?.ToString() ?? userId.ToString(@"D")),
             messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
