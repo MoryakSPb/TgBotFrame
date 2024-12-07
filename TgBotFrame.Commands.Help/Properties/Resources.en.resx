@@ -239,7 +239,7 @@
   </data>
   <data name="HelpCommandController_HelpSyntax_Title" xml:space="preserve">
     <value>Bot commands accept two types of values: commands and arguments\.
-A command is an identifier of a specific action that the bot should perform\. Command identifiers are case-insensitive: you can use both lowercase and uppercase letters\.
+A command is an identifier of a specific action that the bot should perform\. Command identifiers are case\-insensitive: you can use both lowercase and uppercase letters\.
 Parameters are the data required to perform an action\.
 
 Any command begins with the `/` symbol; immediately after the symbol comes the
