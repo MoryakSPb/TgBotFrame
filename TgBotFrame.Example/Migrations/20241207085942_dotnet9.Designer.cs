@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TgBotFrame.Example;
 
@@ -10,9 +11,11 @@ using TgBotFrame.Example;
 namespace TgBotFrame.Example.Migrations
 {
     [DbContext(typeof(ExampleDataContext))]
-    partial class ExampleDataContextModelSnapshot : ModelSnapshot
+    [Migration("20241207085942_dotnet9")]
+    partial class dotnet9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
