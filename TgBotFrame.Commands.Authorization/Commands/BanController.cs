@@ -117,16 +117,17 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     public async Task BanInfo()
     {
         StringBuilder text = new(1024);
-        foreach (var user in dataContext.Bans.Include(x => x.User)
+        foreach (var bans in dataContext.Bans.Include(x => x.User)
                      .AsNoTracking()
-                     .GroupBy(x => x.UserId)
-                     .Select(x => x.OrderByDescending(y => y.Until).First())
-                     .Select(x => new { x.User, x.Until, x.Description }))
+                     .Select(x => new {x.UserId, x.Until, x.User})
+                     .GroupBy(x => x.UserId))
         {
-            text.Append(user.User);
+            var ban = bans.MaxBy(x => x.Until); 
+            if (ban is null) continue;
+            text.Append(ban.User);
             text.Append('\t');
             text.Append('[');
-            text.Append(user.User.Id.ToString(@"D", CultureInfo.InvariantCulture));
+            text.Append(ban.User.Id.ToString(@"D", CultureInfo.InvariantCulture));
             text.Append(']');
             text.AppendLine();
         }
