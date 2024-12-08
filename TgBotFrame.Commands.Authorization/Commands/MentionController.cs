@@ -67,10 +67,10 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
 
         await botClient.SendMessage(
             Context.GetChatId()!,
-            string.Join(@", ", users.Select(x => x.ToString()))
+            string.Join(@", ", users.Select(x => x.GetMention()))
             + ResourceManager.GetString(nameof(MentionController_Mention), Context.GetCultureInfo())!,
             messageThreadId: Context.GetThreadId(),
-            parseMode: ParseMode.None,
+            parseMode: ParseMode.MarkdownV2,
             cancellationToken: CancellationToken).ConfigureAwait(false);
     }
 

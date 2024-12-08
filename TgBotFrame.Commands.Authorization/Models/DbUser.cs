@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TgBotFrame.Commands.Authorization.Models;
@@ -53,4 +54,9 @@ public class DbUser : IEntityTypeConfiguration<DbUser>, IEquatable<DbUser>
         obj is not null
         && (ReferenceEquals(this, obj)
             || (obj.GetType() == GetType() && Equals((DbUser)obj)));
+
+    public string GetMention()
+    {
+        return UserName is null ? @$"[{Id:D}](tg://user?id={Id:D})" : @$"@{UserName}";
+    }
 }
