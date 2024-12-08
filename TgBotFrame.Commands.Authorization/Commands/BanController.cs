@@ -128,7 +128,9 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         int? messageId = Context.GetMessageId();
         await botClient.SendMessage(
                 Context.GetChatId()!,
-                text.ToString(),
+                text.Length > 0
+                    ? text.ToString()
+                    : ResourceManager.GetString(nameof(BanController_BanInfo_Empty), Context.GetCultureInfo())!,
                 ParseMode.None,
                 messageId is not null
                     ? new()
