@@ -33,12 +33,15 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
             return;
         }
 
-        await dataContext.RoleMembers.AddAsync(new()
+        if (!await dataContext.RoleMembers.AnyAsync(x => x.RoleId == role.Id && x.UserId == user).ConfigureAwait(false))
         {
-            UserId = user,
-            RoleId = role.Id,
-        }).ConfigureAwait(false);
-        await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
+            await dataContext.RoleMembers.AddAsync(new()
+            {
+                UserId = user,
+                RoleId = role.Id,
+            }).ConfigureAwait(false);
+            await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
+        }
 
         await botClient.SendMessage(
             Context.GetChatId()!,
