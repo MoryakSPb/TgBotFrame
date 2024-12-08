@@ -155,7 +155,7 @@
     <value>Пользователь {0} более не имеет роли "{1}"</value>
   </data>
   <data name="BanController_Ban_Result" xml:space="preserve">
-    <value>Пользователь @{0} заблокирован до {1:F}</value>
+    <value>Пользователь {0} заблокирован до {1:F}</value>
   </data>
   <data name="BanController_UnBan_Result" xml:space="preserve">
     <value>Пользователь {0} разблокирован</value>
@@ -186,5 +186,8 @@
   </data>
   <data name="BanController_UnBan_NotFound" xml:space="preserve">
     <value>У пользователя нет активных блокировок</value>
+  </data>
+  <data name="BanController_Ban_ResultForever" xml:space="preserve">
+    <value>Пользователь {0} заблокирован навсегда</value>
   </data>
 </root>

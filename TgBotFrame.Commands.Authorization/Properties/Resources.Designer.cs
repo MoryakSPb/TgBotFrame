@@ -70,11 +70,20 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пользователь @{0} заблокирован до {1:F}.
+        ///   Looks up a localized string similar to Пользователь {0} заблокирован до {1:F}.
         /// </summary>
         public static string BanController_Ban_Result {
             get {
                 return ResourceManager.GetString("BanController_Ban_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь {0} заблокирован навсегда.
+        /// </summary>
+        public static string BanController_Ban_ResultForever {
+            get {
+                return ResourceManager.GetString("BanController_Ban_ResultForever", resourceCulture);
             }
         }
         

@@ -27,6 +27,15 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     public async Task Ban(long userId, TimeSpan duration, string description)
     {
         DateTime until = duration == TimeSpan.MaxValue ? DateTime.MaxValue : DateTime.UtcNow + duration;
+        DbUser? user = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+        if (user is null)
+        {
+            EntityEntry<DbUser> userEntity = await dataContext.Users.AddAsync(new()
+            {
+                Id = userId,
+            });
+            user = userEntity.Entity;
+        }
         EntityEntry<DbBan> entity = await dataContext.Bans.AddAsync(new()
         {
             UserId = userId,
@@ -36,11 +45,25 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         int? messageId = Context.GetMessageId();
+        string username = user.ToString();
+        if (string.IsNullOrWhiteSpace(username)) username = $@"[{userId:D}]";
+        string result;
+        if (entity.Entity.Until == DateTime.MaxValue)
+        {
+            result = string.Format(
+                ResourceManager.GetString(nameof(BanController_Ban_ResultForever), Context.GetCultureInfo())!,
+                username);
+        }
+        else
+        {
+            result = string.Format(
+                ResourceManager.GetString(nameof(BanController_Ban_Result), Context.GetCultureInfo())!,
+                username,
+                entity.Entity.Until);
+        }
         await botClient.SendMessage(
             Context.GetChatId()!,
-            string.Format(ResourceManager.GetString(nameof(BanController_Ban_Result), Context.GetCultureInfo())!,
-                DbUser.GetUserDisplayText(Context.GetUsername(), Context.GetFirstName(), Context.GetLastName()),
-                entity.Entity.Until),
+            result,
             messageThreadId: Context.GetThreadId(),
             replyParameters: messageId is not null
                 ? new()
@@ -125,7 +148,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             .Include(x => x.User)
             .Where(x => x.UserId == userId)
             .OrderByDescending(x => x.Until)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync().ConfigureAwait(false);
         string result;
         if (ban is not null)
         {
