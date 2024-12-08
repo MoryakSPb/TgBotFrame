@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 using TgBotFrame.Commands.Help.Extensions;
 using TgBotFrame.Commands.Injection;
 using TgBotFrame.Services;

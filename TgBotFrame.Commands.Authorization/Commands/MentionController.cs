@@ -105,7 +105,9 @@ public class MentionController(ITelegramBotClient botClient, IAuthorizationData 
         await dataContext.SaveChangesAsync(CancellationToken).ConfigureAwait(false);
 
         string text =
-            string.Format(ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!, role.Name)
+            string.Format(
+                ResourceManager.GetString(nameof(MentionController_Mention_EditResult), Context.GetCultureInfo())!,
+                role.Name)
             + (enable
                 ? ResourceManager.GetString(nameof(MentionController_Mention_On), Context.GetCultureInfo())!
                 : ResourceManager.GetString(nameof(MentionController_Mention_Off),

@@ -2,7 +2,6 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TgBotFrame.Commands.Attributes;
-using TgBotFrame.Commands.Authorization.Extensions;
 using TgBotFrame.Commands.Authorization.Interfaces;
 
 namespace TgBotFrame.Commands.Authorization.Commands;
@@ -27,7 +26,8 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     public async Task Ban(long userId, TimeSpan duration, string description)
     {
         DateTime until = duration == TimeSpan.MaxValue ? DateTime.MaxValue : DateTime.UtcNow + duration;
-        DbUser? user = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+        DbUser? user = await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId)
+            .ConfigureAwait(false);
         if (user is null)
         {
             EntityEntry<DbUser> userEntity = await dataContext.Users.AddAsync(new()
@@ -36,6 +36,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
             });
             user = userEntity.Entity;
         }
+
         EntityEntry<DbBan> entity = await dataContext.Bans.AddAsync(new()
         {
             UserId = userId,
@@ -46,7 +47,11 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
 
         int? messageId = Context.GetMessageId();
         string username = user.ToString();
-        if (string.IsNullOrWhiteSpace(username)) username = $@"[{userId:D}]";
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            username = $@"[{userId:D}]";
+        }
+
         string result;
         if (entity.Entity.Until == DateTime.MaxValue)
         {
@@ -61,6 +66,7 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
                 username,
                 entity.Entity.Until);
         }
+
         await botClient.SendMessage(
             Context.GetChatId()!,
             result,
