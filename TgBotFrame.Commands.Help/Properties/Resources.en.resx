@@ -253,8 +253,8 @@ Argument formats:
 \- Integer: a whole decimal number, such as `123`;
 \- Fractional: a fractional number, the fractional part can be separated from the whole by `\.` or `,`;
 \- String: a set of characters, if you need to include problems in it, you can put the string in quotes;
-\- Interval: a time interval in the form `HH:MM:SS` or `HH:MM`, you can also enter an integer number of days;
-\- Date: a date in the format `DD\.MM\.YYYY` or `YYYY\-MM\-DD`;
+\- Duration: a length of time in the form `HH:MM:SS` or `HH:MM`, you can also enter an integer number of days;
+\- Date: a date in the format `MM\/DD\/YYYY` or `YYYY\-MM\-DD`;
 \- Time: time in the format `HH:MM:SS` or `HH:MM`\.</value>
   </data>
 </root>
