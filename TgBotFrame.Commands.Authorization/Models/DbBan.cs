@@ -20,8 +20,6 @@ public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 
     public DbUser User { get; init; } = null!;
 
-    public bool Equals(DbBan? other) => other is not null && (ReferenceEquals(this, other) || Id.Equals(other.Id));
-
     public void Configure(EntityTypeBuilder<DbBan> entity)
     {
         entity.HasKey(x => x.Id);
@@ -36,6 +34,8 @@ public class DbBan : IEntityTypeConfiguration<DbBan>, IEquatable<DbBan>
 
         entity.HasQueryFilter(x => x.Until > DateTime.UtcNow);
     }
+
+    public bool Equals(DbBan? other) => other is not null && (ReferenceEquals(this, other) || Id.Equals(other.Id));
 
     public override int GetHashCode() => Id.GetHashCode();
 
