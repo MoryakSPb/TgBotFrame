@@ -3,12 +3,28 @@ using System.Text;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TgBotFrame.Commands.Attributes;
 using TgBotFrame.Commands.Authorization.Interfaces;
+using TgBotFrame.Commands.Authorization.Services;
 
 namespace TgBotFrame.Commands.Authorization.Commands;
 
 [CommandController("Ban")]
-public class BanController(ITelegramBotClient botClient, IAuthorizationData dataContext) : CommandControllerBase
+public class BanController(
+    ITelegramBotClient botClient,
+    IAuthorizationData dataContext,
+    ReplyUserIdResolver replyUserIdResolver) : CommandControllerBase
 {
+    [Restricted("admin", "ban_list")]
+    [Command(nameof(Ban))]
+    public Task Ban() => Ban(TimeSpan.MaxValue, string.Empty);
+
+    [Restricted("admin", "ban_list")]
+    [Command(nameof(Ban))]
+    public Task Ban(TimeSpan duration) => Ban(duration, string.Empty);
+
+    [Restricted("admin", "ban_list")]
+    [Command(nameof(Ban))]
+    public Task Ban(string description) => Ban(TimeSpan.MaxValue, description);
+
     [Restricted("admin", "ban_list")]
     [Command(nameof(Ban))]
     public Task Ban(long userId) => Ban(userId, TimeSpan.MaxValue, string.Empty);
@@ -20,6 +36,29 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
     [Restricted("admin", "ban_list")]
     [Command(nameof(Ban))]
     public Task Ban(long userId, TimeSpan duration) => Ban(userId, duration, string.Empty);
+
+    [Restricted("admin", "ban_list")]
+    [Command(nameof(Ban))]
+    public async Task Ban(TimeSpan duration, string description)
+    {
+        long? userId = await replyUserIdResolver.GetReplyUserId(Update, CancellationToken);
+        if (userId is null)
+        {
+            await botClient.SendMessage(
+                Context.GetChatId()!,
+                ResourceManager.GetString(nameof(BanController_Ban_NotReply), Context.GetCultureInfo())!,
+                messageThreadId: Context.GetThreadId(),
+                replyParameters: Context.GetMessageId() is not null
+                    ? new()
+                    {
+                        MessageId = Context.GetMessageId()!.Value,
+                    }
+                    : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        await Ban(userId.Value, duration, description);
+    }
 
     [Restricted("admin", "ban_list")]
     [Command(nameof(Ban))]
@@ -119,11 +158,15 @@ public class BanController(ITelegramBotClient botClient, IAuthorizationData data
         StringBuilder text = new(1024);
         foreach (var bans in dataContext.Bans.Include(x => x.User)
                      .AsNoTracking()
-                     .Select(x => new {x.UserId, x.Until, x.User})
+                     .Select(x => new { x.UserId, x.Until, x.User })
                      .GroupBy(x => x.UserId))
         {
-            var ban = bans.MaxBy(x => x.Until); 
-            if (ban is null) continue;
+            var ban = bans.MaxBy(x => x.Until);
+            if (ban is null)
+            {
+                continue;
+            }
+
             text.Append(ban.User);
             text.Append('\t');
             text.Append('[');

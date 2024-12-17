@@ -70,6 +70,15 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Данную команду необходимо использовать в ответ на сообщение пользователя.
+        /// </summary>
+        public static string BanController_Ban_NotReply {
+            get {
+                return ResourceManager.GetString("BanController_Ban_NotReply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Пользователь {0} заблокирован до {1:F}.
         /// </summary>
         public static string BanController_Ban_Result {

@@ -193,4 +193,7 @@
   <data name="BanController_BanInfo_Empty" xml:space="preserve">
     <value>На данный момент активные блокировки отсутствуют</value>
   </data>
+  <data name="BanController_Ban_NotReply" xml:space="preserve">
+    <value>Данную команду необходимо использовать в ответ на сообщение пользователя</value>
+  </data>
 </root>
