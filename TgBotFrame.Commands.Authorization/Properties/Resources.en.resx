@@ -190,7 +190,8 @@
     <value>Replies with a list of blocked users. By specifying the user ID as an integer parameter, the bot responds with blocking details</value>
   </data>
   <data name="Command_Description_Ban" xml:space="preserve">
-    <value>Blocks a user inside the bot, preventing them from executing commands. The various command options assume that the integer is the user ID, the duration is the blocking time, and the text is a description of the blocking reason for administrators. If the blocking time is not specified, the blocking is assumed to be permanent.</value>
+    <value>Blocks a user inside the bot, preventing them from executing commands. The various command options assume that the integer is the user ID, the duration is the blocking time, and the text is a description of the blocking reason for administrators. If the blocking time is not specified, the blocking is assumed to be permanent.
+The command variants without an integer parameter must be used when replying with a command to a message from the user you want to block.</value>
   </data>
   <data name="Command_Description_AddRole" xml:space="preserve">
     <value>Assigns a user to the specified role.
@@ -202,5 +203,17 @@ Specify the role name first, then the user ID.</value>
   <data name="Command_Description_RemoveRole" xml:space="preserve">
     <value>Removes a user from membership in a role.
 Specify the role name first, then the user ID.</value>
+  </data>
+  <data name="BanController_BanInfo_Empty" xml:space="preserve">
+    <value>The user is not banned</value>
+  </data>
+  <data name="BanController_Ban_ResultForever" xml:space="preserve">
+    <value>User {0} blocked forever</value>
+  </data>
+  <data name="BanController_UnBan_NotFound" xml:space="preserve">
+    <value>This user has no bans</value>
+  </data>
+  <data name="BanController_Ban_NotReply" xml:space="preserve">
+    <value>This command must be used in reply to a user message</value>
   </data>
 </root>
