@@ -19,52 +19,47 @@ public class StubTelegramBotClient : ITelegramBotClient
         switch (request)
         {
             case GetMeRequest:
+            {
+                User user = new()
                 {
-                    User user = new()
-                    {
-                        Id = 0,
-                        Username = "TEST",
-                        LanguageCode = "en",
-                        FirstName = "TEST_NAME",
-                        IsBot = true,
-                    };
-                    string json = JsonSerializer.Serialize(user);
-                    return Task.FromResult(JsonSerializer.Deserialize<TResponse>(json)!);
-                }
+                    Id = 0,
+                    Username = "TEST",
+                    LanguageCode = "en",
+                    FirstName = "TEST_NAME",
+                    IsBot = true,
+                };
+                string json = JsonSerializer.Serialize(user);
+                return Task.FromResult(JsonSerializer.Deserialize<TResponse>(json)!);
+            }
             case SendMessageRequest sendMessageRequest:
+            {
+                Message message = new()
                 {
-                    Message message = new()
+                    Id = Random.Shared.Next(0),
+                    Chat = new()
                     {
-                        Id = Random.Shared.Next(0),
-                        Chat = new()
-                        {
-                            Id = sendMessageRequest.ChatId.Identifier.GetValueOrDefault(0L),
-                            Username = sendMessageRequest.ChatId.Username,
-                            Type = ChatType.Private,
-                        },
-                        Text = sendMessageRequest.Text,
-                        MessageThreadId = sendMessageRequest.MessageThreadId,
-                    };
-                    Messages.Enqueue(sendMessageRequest);
-                    string json = JsonSerializer.Serialize(message);
-                    return Task.FromResult(JsonSerializer.Deserialize<TResponse>(json)!);
-                }
+                        Id = sendMessageRequest.ChatId.Identifier.GetValueOrDefault(0L),
+                        Username = sendMessageRequest.ChatId.Username,
+                        Type = ChatType.Private,
+                    },
+                    Text = sendMessageRequest.Text,
+                    MessageThreadId = sendMessageRequest.MessageThreadId,
+                };
+                Messages.Enqueue(sendMessageRequest);
+                string json = JsonSerializer.Serialize(message);
+                return Task.FromResult(JsonSerializer.Deserialize<TResponse>(json)!);
+            }
             default:
                 throw new NotImplementedException();
         }
     }
 
-    public Task<TResponse> MakeRequest<TResponse>(IRequest<TResponse> request,
-        CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
-
-    public Task<TResponse> MakeRequestAsync<TResponse>(IRequest<TResponse> request,
-        CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
-
     public Task<bool> TestApi(CancellationToken cancellationToken = default) => Task.FromResult(true);
 
     public Task DownloadFile(string filePath, Stream destination, CancellationToken cancellationToken = default) =>
+        throw new NotImplementedException();
+
+    public Task DownloadFile(TGFile file, Stream destination, CancellationToken cancellationToken = default) =>
         throw new NotImplementedException();
 
     public bool LocalBotServer => true;
