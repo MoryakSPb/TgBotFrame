@@ -9,14 +9,14 @@
 		<Title>TgBotFrame.Commands.Help</Title>
 		<Authors>Aleksandr Erokhin</Authors>
 		<NeutralLanguage>ru</NeutralLanguage>
-		<Copyright>Copyright (C) 2024 Aleksandr Erokhin</Copyright>
+		<Copyright>Copyright (C) 2024-2025 Aleksandr Erokhin</Copyright>
 		<PackageProjectUrl>https://github.com/MoryakSPb/TgBotFrame</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/MoryakSPb/TgBotFrame</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>1.4.16</Version>
+		<Version>1.4.17</Version>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageTags>telegram,tg,commands</PackageTags>
