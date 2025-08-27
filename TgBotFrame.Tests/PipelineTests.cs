@@ -33,8 +33,7 @@ public class PipelineTests
     {
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<IncrementMiddleware>();
-        services.AddSingleton<FrameMiddleware, IncrementMiddleware>(
-            x => x.GetRequiredService<IncrementMiddleware>());
+        services.AddSingleton<FrameMiddleware, IncrementMiddleware>(x => x.GetRequiredService<IncrementMiddleware>());
         services.AddSingleton<ITelegramBotClient, StubTelegramBotClient>();
         services.AddLogging(builder => builder.AddConsole());
         services.AddMetrics();
@@ -55,11 +54,9 @@ public class PipelineTests
     {
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<IncrementMiddleware>();
-        services.AddSingleton<FrameMiddleware, IncrementMiddleware>(
-            x => x.GetRequiredService<IncrementMiddleware>());
+        services.AddSingleton<FrameMiddleware, IncrementMiddleware>(x => x.GetRequiredService<IncrementMiddleware>());
         services.AddSingleton<DecrementMiddleware>();
-        services.AddSingleton<FrameMiddleware, DecrementMiddleware>(
-            x => x.GetRequiredService<DecrementMiddleware>());
+        services.AddSingleton<FrameMiddleware, DecrementMiddleware>(x => x.GetRequiredService<DecrementMiddleware>());
         services.AddSingleton<ITelegramBotClient, StubTelegramBotClient>();
         services.AddLogging(builder => builder.AddConsole());
         services.AddMetrics();

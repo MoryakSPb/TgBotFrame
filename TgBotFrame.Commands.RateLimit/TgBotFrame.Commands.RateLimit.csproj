@@ -31,14 +31,14 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Threading.RateLimiting" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
+		<ProjectReference Include="..\TgBotFrame.Commands\TgBotFrame.Commands.csproj" />
 	</ItemGroup>
 
 </Project>
