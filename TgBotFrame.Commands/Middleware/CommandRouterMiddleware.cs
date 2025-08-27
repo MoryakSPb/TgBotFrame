@@ -114,9 +114,9 @@ public sealed class CommandRouterMiddleware(
             + Environment.NewLine
             + string.Format(Resources.ResourceManager.GetString(@"UseHelpMessage", Culture)!,
                 ExceptedName), replyParameters: new()
-            {
-                MessageId = update.Message.MessageId,
-            },
+                {
+                    MessageId = update.Message.MessageId,
+                },
             cancellationToken: ct).ConfigureAwait(false);
     }
 
