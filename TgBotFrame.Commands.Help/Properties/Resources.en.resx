@@ -238,14 +238,10 @@
     <value>This category contains help commands. Most of these commands can be used without entering them manually, using the menu buttons from the help command</value>
   </data>
   <data name="HelpCommandController_HelpSyntax_Title" xml:space="preserve">
-    <value>Bot commands accept two types of values: commands and arguments\.
-A command is an identifier of a specific action that the bot should perform\. Command identifiers are case\-insensitive: you can use both lowercase and uppercase letters\.
+    <value>Bot commands accept two types of values: commands and arguments\. A command is an identifier of a specific action that the bot should perform\. Command identifiers are case\-insensitive: you can use both lowercase and uppercase letters\.
 Parameters are the data required to perform an action\.
 
-Any command begins with the `/` symbol; immediately after the symbol comes the
-command identifier\.
-Parameters are separated from each other and the command identifier by spaces\.
-For example: the bot will respond to the message `/HelpCommand Help` with help on the `Help` command\.
+Any command begins with the `/` symbol; immediately after the symbol comes the command identifier\. Parameters are separated from each other and the command identifier by spaces\. For example: the bot will respond to the message `/HelpCommand Help` with help on the `Help` command\.
 
 Argument formats:
 
