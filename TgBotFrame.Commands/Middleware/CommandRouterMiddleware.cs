@@ -58,6 +58,20 @@ public sealed class CommandRouterMiddleware(
                     await SendInvalidArgFormat(update, context, invalidArgIndex, ct).ConfigureAwait(false);
                     break;
                 default:
+                    KeyValuePair<MethodInfo, ParameterInfo[]> strMethod = allMethods
+                        .Where(x => x.Value.Length < CommandArgumentsRaw.Count)
+                        .OrderByDescending(x => x.Value.Length)
+                        .FirstOrDefault(x => x.Value.Last().ParameterType == typeof(string));
+                    if (strMethod.Key is not null)
+                    {
+                        List<string> oldArgs = (List<string>)context.Properties[CommandSplitterMiddleware.COMMAND_ARGS_KEY]!;
+                        string last = oldArgs.Last();
+                        oldArgs.RemoveAt(oldArgs.Count - 1);
+                        oldArgs[^1] += @" " + last;
+                        context.Properties[CommandSplitterMiddleware.COMMAND_ARGS_KEY] = oldArgs;
+                        await InvokeAsync(update, context, ct).ConfigureAwait(false);
+                        return;
+                    }
                     await SendInvalidArgsCount(update, context, ct).ConfigureAwait(false);
                     break;
             }
