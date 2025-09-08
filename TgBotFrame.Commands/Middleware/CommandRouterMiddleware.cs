@@ -64,7 +64,8 @@ public sealed class CommandRouterMiddleware(
                         .FirstOrDefault(x => x.Value.Last().ParameterType == typeof(string));
                     if (strMethod.Key is not null)
                     {
-                        List<string> oldArgs = (List<string>)context.Properties[CommandSplitterMiddleware.COMMAND_ARGS_KEY]!;
+                        List<string> oldArgs =
+                            (List<string>)context.Properties[CommandSplitterMiddleware.COMMAND_ARGS_KEY]!;
                         string last = oldArgs.Last();
                         oldArgs.RemoveAt(oldArgs.Count - 1);
                         oldArgs[^1] += @" " + last;
@@ -72,6 +73,7 @@ public sealed class CommandRouterMiddleware(
                         await InvokeAsync(update, context, ct).ConfigureAwait(false);
                         return;
                     }
+
                     await SendInvalidArgsCount(update, context, ct).ConfigureAwait(false);
                     break;
             }
@@ -128,9 +130,9 @@ public sealed class CommandRouterMiddleware(
             + Environment.NewLine
             + string.Format(Resources.ResourceManager.GetString(@"UseHelpMessage", Culture)!,
                 ExceptedName), replyParameters: new()
-                {
-                    MessageId = update.Message.MessageId,
-                },
+            {
+                MessageId = update.Message.MessageId,
+            },
             cancellationToken: ct).ConfigureAwait(false);
     }
 
@@ -295,7 +297,68 @@ public sealed class CommandRouterMiddleware(
 
         if (candidates.Count > 1)
         {
-            return (null, int.MaxValue);
+            if (CommandArgumentsRaw.Count == 0)
+            {
+                return (null, int.MaxValue);
+            }
+
+            KeyValuePair<int, MethodCandidate>? stringCandidate = null;
+            Dictionary<int, MethodCandidate> passedCandidates = [];
+
+            string lastArgRaw = CommandArgumentsRaw.Last();
+
+            foreach (KeyValuePair<int, MethodCandidate> candidate in candidates)
+            {
+                Type argType = candidate.Value.Parameters.Last().ParameterType;
+                if (argType == typeof(string))
+                {
+                    stringCandidate = candidate;
+                    stringCandidate.Value.Value.Args[^1] = lastArgRaw;
+                }
+                else if (argType == typeof(bool) && bool.TryParse(lastArgRaw, out bool result))
+                {
+                    candidate.Value.Args[^1] = result;
+                    passedCandidates.Add(candidate.Key, candidate.Value);
+                }
+                else if (argType.GetInterfaces().Contains(typeof(IParsable<>).MakeGenericType(argType)))
+                {
+                    MethodInfo parseMethod = argType.GetMethod(
+                                                 nameof(int.TryParse),
+                                                 BindingFlags.Static | BindingFlags.Public,
+                                                 [
+                                                     typeof(string),
+                                                     typeof(IFormatProvider),
+                                                     argType.MakeByRefType(),
+                                                 ])
+                                             ?? throw new InvalidOperationException();
+                    object?[] parseArgs = [lastArgRaw, Culture, null];
+                    bool parseResult = (bool)parseMethod.Invoke(null, parseArgs)!;
+                    if (!parseResult)
+                    {
+                        continue;
+                    }
+
+                    candidate.Value.Args[^1] = parseArgs[2]!;
+                    passedCandidates.Add(candidate.Key, candidate.Value);
+                }
+            }
+
+            candidates = passedCandidates;
+            switch (passedCandidates.Count)
+            {
+                case 0:
+                    if (stringCandidate is null)
+                    {
+                        return (null, -1);
+                    }
+
+                    candidates.Add(stringCandidate.Value.Key, stringCandidate.Value.Value);
+                    break;
+                case 1:
+                    break;
+                default:
+                    return (null, int.MaxValue);
+            }
         }
 
         MethodCandidate resultStruct = candidates.Values.First();

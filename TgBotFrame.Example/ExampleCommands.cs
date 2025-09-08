@@ -28,6 +28,57 @@ public class ExampleCommands(ITelegramBotClient botClient) : CommandControllerBa
                 : null, cancellationToken: CancellationToken).ConfigureAwait(false);
     }
 
+    [Command(nameof(Echo))]
+    public async Task Echo(bool text)
+    {
+        int? messageId = Context.GetMessageId();
+        await botClient.SendMessage(
+            Context.GetChatId()!,
+            text ? "0b1" : "0b0",
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
+            replyParameters: messageId is not null
+                ? new()
+                {
+                    MessageId = messageId.Value,
+                }
+                : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+    }
+
+    [Command(nameof(Echo))]
+    public async Task Echo(int text)
+    {
+        int? messageId = Context.GetMessageId();
+        await botClient.SendMessage(
+            Context.GetChatId()!,
+            text.ToString("X", Culture),
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
+            replyParameters: messageId is not null
+                ? new()
+                {
+                    MessageId = messageId.Value,
+                }
+                : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+    }
+
+    [Command(nameof(Echo))]
+    public async Task Echo(ulong text)
+    {
+        int? messageId = Context.GetMessageId();
+        await botClient.SendMessage(
+            Context.GetChatId()!,
+            text.ToString("x", Culture),
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
+            replyParameters: messageId is not null
+                ? new()
+                {
+                    MessageId = messageId.Value,
+                }
+                : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+    }
+
     [Command(nameof(GetId))]
     public async Task GetId()
     {
