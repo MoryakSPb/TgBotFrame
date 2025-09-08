@@ -216,4 +216,7 @@ Specify the role name first, then the user ID.</value>
   <data name="BanController_Ban_NotReply" xml:space="preserve">
     <value>This command must be used in reply to a user message</value>
   </data>
+  <data name="RoleController_Add_UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
 </root>

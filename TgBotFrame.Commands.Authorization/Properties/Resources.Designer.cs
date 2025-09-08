@@ -317,6 +317,15 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Пользователь не найден.
+        /// </summary>
+        public static string RoleController_Add_UserNotFound {
+            get {
+                return ResourceManager.GetString("RoleController_Add_UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Роль &quot;{0}&quot; не существует.
         /// </summary>
         public static string RoleManagementController_Add_NotFound {

@@ -9,6 +9,38 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
 {
     [Restricted("admin")]
     [Command(nameof(Add) + "Role")]
+    public async Task Add(string roleName, string user)
+    {
+        if (user.StartsWith('@'))
+        {
+            user = user[1..];
+        }
+
+        long id = await dataContext.Users.AsNoTracking().Where(x => x.UserName == user).Select(x => x.Id)
+            .FirstOrDefaultAsync();
+        if (id == 0)
+        {
+            int? messageId = Context.GetMessageId();
+            await botClient.SendMessage(
+                Context.GetChatId()!,
+                ResourceManager.GetString(nameof(RoleController_Add_UserNotFound), Context.GetCultureInfo())!,
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.None,
+                replyParameters: messageId is not null
+                    ? new()
+                    {
+                        MessageId = messageId.Value,
+                    }
+                    : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            await Add(roleName, id);
+        }
+    }
+
+    [Restricted("admin")]
+    [Command(nameof(Add) + "Role")]
     public async Task Add(string roleName, long user)
     {
         int? messageId = Context.GetMessageId();
@@ -56,6 +88,38 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                     MessageId = messageId.Value,
                 }
                 : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+    }
+
+    [Restricted("admin")]
+    [Command(nameof(Remove) + "Role")]
+    public async Task Remove(string roleName, string user)
+    {
+        if (user.StartsWith('@'))
+        {
+            user = user[1..];
+        }
+
+        long id = await dataContext.Users.AsNoTracking().Where(x => x.UserName == user).Select(x => x.Id)
+            .FirstOrDefaultAsync();
+        if (id == 0)
+        {
+            int? messageId = Context.GetMessageId();
+            await botClient.SendMessage(
+                Context.GetChatId()!,
+                ResourceManager.GetString(nameof(RoleController_Add_UserNotFound), Context.GetCultureInfo())!,
+                messageThreadId: Context.GetThreadId(),
+                parseMode: ParseMode.None,
+                replyParameters: messageId is not null
+                    ? new()
+                    {
+                        MessageId = messageId.Value,
+                    }
+                    : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            await Remove(roleName, id);
+        }
     }
 
     [Restricted("admin")]
