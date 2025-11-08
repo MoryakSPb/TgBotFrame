@@ -7,7 +7,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageVersion Include="System.Threading.RateLimiting" Version="9.0.10" />
-    <PackageVersion Include="Telegram.Bot" Version="22.7.4" />
+    <PackageVersion Include="Telegram.Bot" Version="22.7.5" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
