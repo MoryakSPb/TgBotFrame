@@ -200,4 +200,7 @@
   <data name="RoleController_Add_UserNotFound" xml:space="preserve">
     <value>Пользователь не найден</value>
   </data>
+  <data name="RoleController_List_NotFound" xml:space="preserve">
+    <value>Данная роль не назначена ни одному пользователю</value>
+  </data>
 </root>

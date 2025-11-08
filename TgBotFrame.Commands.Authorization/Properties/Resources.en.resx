@@ -219,4 +219,7 @@ Specify the role name first, then the user ID.</value>
   <data name="RoleController_Add_UserNotFound" xml:space="preserve">
     <value>User not found</value>
   </data>
+  <data name="RoleController_List_NotFound" xml:space="preserve">
+    <value>This role is not assigned to any user</value>
+  </data>
 </root>

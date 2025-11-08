@@ -326,6 +326,15 @@ namespace TgBotFrame.Commands.Authorization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Данная роль не назначена ни одному пользователю.
+        /// </summary>
+        public static string RoleController_List_NotFound {
+            get {
+                return ResourceManager.GetString("RoleController_List_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Роль &quot;{0}&quot; не существует.
         /// </summary>
         public static string RoleManagementController_Add_NotFound {

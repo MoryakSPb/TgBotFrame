@@ -167,4 +167,28 @@ public class RoleController(ITelegramBotClient botClient, IAuthorizationData dat
                 }
                 : null, cancellationToken: CancellationToken).ConfigureAwait(false);
     }
+
+    [Restricted("admin")]
+    [Command("Role" + nameof(List))]
+    public async Task List(string roleName)
+    {
+        int? messageId = Context.GetMessageId();
+        DbUser[] users = await dataContext.RoleMembers.AsNoTracking().Where(x => x.Role.Name == roleName)
+            .Select(x => x.User).ToArrayAsync();
+        string result = users.Length == 0
+            ? ResourceManager.GetString(nameof(RoleController_List_NotFound),
+                Context.GetCultureInfo())!
+            : string.Join(Environment.NewLine, users.Select(x => x.GetMention()));
+        await botClient.SendMessage(
+            Context.GetChatId()!,
+            result,
+            messageThreadId: Context.GetThreadId(),
+            parseMode: ParseMode.None,
+            replyParameters: messageId is not null
+                ? new()
+                {
+                    MessageId = messageId.Value,
+                }
+                : null, cancellationToken: CancellationToken).ConfigureAwait(false);
+    }
 }
