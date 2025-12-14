@@ -50,7 +50,7 @@ public class ChatInfoMiddleware(ITelegramBotClient botClient) : FrameMiddleware
         (long? chatId, int? threadId, int? messageId) = update.Type switch
         {
             UpdateType.Unknown => (null, null, null),
-            UpdateType.Message => (update.Message!.Chat.Id, update.Message!.MessageThreadId,
+            UpdateType.Message => (update.Message!.Chat.Id, update.Message!.IsTopicMessage ? update.Message!.MessageThreadId : null,
                 update.Message!.MessageId),
             UpdateType.InlineQuery => (null, null, null),
             UpdateType.ChosenInlineResult => (null, null, null),
