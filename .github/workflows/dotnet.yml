@@ -21,10 +21,10 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Restore dependencies
-      run: dotnet restore TgBotFrame.sln
+      run: dotnet restore TgBotFrame.slnx
     - name: Check code style
-      run: dotnet format TgBotFrame.sln --no-restore --verify-no-changes --verbosity normal
+      run: dotnet format TgBotFrame.slnx --no-restore --verify-no-changes --verbosity normal
     - name: Build
-      run: dotnet build TgBotFrame.sln --no-restore
+      run: dotnet build TgBotFrame.slnx --no-restore
     - name: Test
-      run: dotnet test TgBotFrame.sln --no-build --verbosity normal
+      run: dotnet test TgBotFrame.slnx --no-build --verbosity normal
