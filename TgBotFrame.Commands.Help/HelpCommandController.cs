@@ -94,7 +94,6 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             Context.GetUserId()!,
             Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpList_Description),
                 Context.GetCultureInfo())!,
-            ParseMode.None,
             replyMarkup: new InlineKeyboardMarkup(buttons)
         ).ConfigureAwait(false);
     }
@@ -111,9 +110,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             await botClient.SendMessage(
                 Context.GetUserId()!,
                 Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpCategory_NotFound),
-                    Context.GetCultureInfo())!,
-                ParseMode.None,
-                replyMarkup: null).ConfigureAwait(false);
+                    Context.GetCultureInfo())!).ConfigureAwait(false);
             return;
         }
 
@@ -131,7 +128,6 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         await botClient.SendMessage(
             Context.GetUserId()!,
             text,
-            ParseMode.None,
             replyMarkup: new InlineKeyboardMarkup(buttons)).ConfigureAwait(false);
     }
 
@@ -145,9 +141,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             await botClient.SendMessage(
                 Context.GetUserId()!,
                 Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpCommand_NotFound),
-                    Context.GetCultureInfo())!,
-                ParseMode.None,
-                replyMarkup: null).ConfigureAwait(false);
+                    Context.GetCultureInfo())!).ConfigureAwait(false);
             return;
         }
 
