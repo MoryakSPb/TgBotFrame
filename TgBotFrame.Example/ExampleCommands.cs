@@ -82,7 +82,7 @@ public class ExampleCommands(ITelegramBotClient botClient) : CommandControllerBa
     [Command(nameof(GetId))]
     public async Task GetId()
     {
-        long? userId = Update.Message?.ReplyToMessage?.From?.Id;
+        long? userId = Update.Message?.Chat?.Id;
         int? messageId = Context.GetMessageId();
         await botClient.SendMessage(
             Context.GetChatId()!,

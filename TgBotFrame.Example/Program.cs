@@ -5,6 +5,7 @@ using Telegram.Bot;
 using TgBotFrame.Commands.Authorization.Extensions;
 using TgBotFrame.Commands.Authorization.Interfaces;
 using TgBotFrame.Commands.Help.Extensions;
+using TgBotFrame.Commands.Help.Services;
 using TgBotFrame.Commands.Injection;
 using TgBotFrame.Commands.RateLimit.Middleware;
 using TgBotFrame.Commands.RateLimit.Options;
@@ -56,12 +57,15 @@ builder.Services.AddTgBotFrameCommands(commandsBuilder =>
 {
     commandsBuilder.AddStartCommand("Hello, world\\!");
     commandsBuilder.AddHelpCommand();
+    
 
     commandsBuilder.TryAddCommandMiddleware<RateLimitMiddleware>();
     commandsBuilder.AddAuthorization();
 
     commandsBuilder.TryAddControllers(Assembly.GetEntryAssembly()!);
 });
+
+builder.Services.AddHelpServices();
 
 builder.Services.AddHealthChecks()
     .AddUrlGroup(new Uri("https://api.telegram.org/"), HttpMethod.Head)
@@ -73,6 +77,9 @@ IServiceScopeFactory scopeFactory = app.Services.GetRequiredService<IServiceScop
 AsyncServiceScope scope = scopeFactory.CreateAsyncScope();
 await using (scope.ConfigureAwait(false))
 {
+    var helpService = scope.ServiceProvider.GetRequiredService<HelpCommandService>();
+    await helpService.SetMyCommands().ConfigureAwait(false);
+    
     ExampleDataContext dbContext = scope.ServiceProvider.GetRequiredService<ExampleDataContext>();
     Directory.CreateDirectory("../data/sqlite");
     await dbContext.Database.MigrateAsync().ConfigureAwait(false);

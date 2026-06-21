@@ -1,4 +1,4 @@
-﻿using Telegram.Bot;
+﻿/*using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using TgBotFrame.Commands.Attributes;
 using TgBotFrame.Commands.Extensions;
@@ -29,4 +29,4 @@ public class ExtendedHelpController(ITelegramBotClient botClient, CommandExplore
                 }
                 : null, cancellationToken: CancellationToken).ConfigureAwait(false);
     }
-}
+}*/
