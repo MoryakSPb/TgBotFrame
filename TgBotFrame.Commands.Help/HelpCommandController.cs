@@ -59,34 +59,34 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         IEnumerable<InlineKeyboardButton[]> buttons = commandExplorer.Commands.Values
             .SelectMany(x => x.Keys)
             .Select(x => x.DeclaringType)
-            .Select(x => (GetResourceManager(x?.Assembly),
+            .Select(x => (x?.Assembly,
                 x?.GetCustomAttribute<CommandControllerAttribute>()?.CategoryKey))
-            .Distinct()
-            .Select(x =>
+            .GroupBy(x => x.CategoryKey, StringComparer.OrdinalIgnoreCase)
+            .Select(g =>
             {
+                string? categoryKey = g.Key;
                 string displayName;
-                if (string.IsNullOrEmpty(x.CategoryKey))
+                if (string.IsNullOrEmpty(categoryKey))
                 {
                     displayName = Resources.ResourceManager.GetString(
                         nameof(HelpCommandController_HelpList_WithoutCategory),
                         Context.GetCultureInfo())!;
                 }
-                else if (x.Item1 is not null)
-                {
-                    displayName = x.Item1.GetString(CATEGORY_NAME_PREFIX + x.CategoryKey,
-                        Context.GetCultureInfo()) ?? x.CategoryKey;
-                }
                 else
                 {
-                    displayName = x.CategoryKey;
+                    displayName = g
+                        .Select(x => GetResourceManager(x.Assembly)
+                            ?.GetString(CATEGORY_NAME_PREFIX + categoryKey, Context.GetCultureInfo()))
+                        .FirstOrDefault(x => x is not null)
+                        ?? categoryKey;
                 }
 
-                return (x.Item1, x.CategoryKey, displayName);
+                return (displayName, categoryKey);
             }).OrderBy(x => x.displayName, StringComparer.Create(Context.GetCultureInfo(), true)).Select(x => new[]
             {
                 InlineKeyboardButton.WithCallbackData(
                     x.displayName,
-                    $@"/{nameof(HelpCategory)} {x.CategoryKey}"),
+                    $@"/{nameof(HelpCategory)} {x.categoryKey}"),
             });
 
 
