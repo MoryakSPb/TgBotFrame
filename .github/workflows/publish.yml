@@ -1,0 +1,42 @@
+name: Publish NuGet packages
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Restore dependencies
+        run: dotnet restore TgBotFrame.slnx
+
+      - name: Check code style
+        run: dotnet format TgBotFrame.slnx --no-restore --verify-no-changes --verbosity normal
+
+      - name: Build
+        run: dotnet build TgBotFrame.slnx --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test TgBotFrame.slnx --no-build --configuration Release --verbosity normal
+
+      - name: Pack
+        run: dotnet pack TgBotFrame.slnx --no-build --configuration Release -p:Version=${{ env.VERSION }} -o packages
+
+      - name: Push to NuGet
+        run: dotnet nuget push packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Push symbols
+        run: dotnet nuget push packages/*.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
