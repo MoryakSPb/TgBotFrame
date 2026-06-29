@@ -1,9 +1,9 @@
-﻿using System.Collections.Frozen;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using Telegram.Bot;
 using TgBotFrame.Commands.Extensions;
 using TgBotFrame.Commands.Properties;
@@ -15,7 +15,8 @@ public sealed class CommandRouterMiddleware(
     CommandExplorerService commandExplorerService,
     IServiceScopeFactory scopeFactory,
     ITelegramBotClient botClient,
-    ILogger<CommandRouterMiddleware> logger) : FrameMiddleware
+    ILogger<CommandRouterMiddleware> logger,
+    IVariantFeatureManager? featureManager = null) : FrameMiddleware
 {
     public const string COMMAND_CONTROLLER_KEY = "CommandController";
     public const string COMMAND_METHOD_KEY = "CommandMethod";
@@ -38,8 +39,11 @@ public sealed class CommandRouterMiddleware(
         ExceptedName = context.GetBotUsername();
         CommandArgumentsRaw = context.GetCommandArgsRaw();
 
-        if (!commandExplorerService.Commands.TryGetValue(CommandKey,
-                out FrozenDictionary<MethodInfo, ParameterInfo[]>? allMethods) || allMethods.Count == 0)
+
+        Dictionary<MethodInfo, ParameterInfo[]> allMethods = await commandExplorerService
+            .GetCommand(featureManager, CommandKey).ToDictionaryAsync(cancellationToken: ct);
+
+        if (allMethods.Count == 0)
         {
             await SendCommandNotFound(update, context, ct).ConfigureAwait(false);
             await Next(update, context, ct).ConfigureAwait(false);
@@ -180,7 +184,7 @@ public sealed class CommandRouterMiddleware(
     }
 
     private (MethodInfo?, int invalidArgIndex) GetMethod(
-        in FrozenDictionary<MethodInfo, ParameterInfo[]> allMethods, out object?[] args)
+        in IDictionary<MethodInfo, ParameterInfo[]> allMethods, out object?[] args)
     {
         args = [];
         KeyValuePair<MethodInfo, ParameterInfo[]> method;

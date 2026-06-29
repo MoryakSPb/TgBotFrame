@@ -1,19 +1,25 @@
-﻿using Telegram.Bot;
+﻿using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.Mvc;
+using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
+using TgBotFrame.Commands;
 using TgBotFrame.Commands.Attributes;
 using TgBotFrame.Commands.Extensions;
-using TgBotFrame.Commands.Help;
 using TgBotFrame.Commands.Services;
 
 namespace TgBotFrame.Example;
 
 [CommandController("Help")]
-public class ExtendedHelpController(ITelegramBotClient botClient, CommandExplorerService commandExplorer)
-    : HelpCommandController(botClient, commandExplorer)
+public class ExtendedHelpController(
+    ITelegramBotClient botClient,
+    CommandExplorerService commandExplorer,
+    IVariantFeatureManager? featureManager = null)
+    : CommandControllerBase //: HelpCommandController(botClient, commandExplorer, featureManager)
 {
     private readonly ITelegramBotClient _botClient = botClient;
 
     [Command(nameof(EchoDouble))]
+    [FeatureGate("EchoDoubleFeature")]
     public async Task EchoDouble(string text)
     {
         int? messageId = Context.GetMessageId();

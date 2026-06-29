@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 using OpenTelemetry.Metrics;
 using Telegram.Bot;
 using TgBotFrame.Commands.Authorization.Extensions;
@@ -39,6 +40,8 @@ builder.Services.AddOpenTelemetry().WithMetrics(providerBuilder =>
 const string sqliteConnectionString = "Data Source=../data/sqlite/example.sqlite";
 
 string? tgToken = builder.Configuration.GetConnectionString("Telegram");
+builder.Services.AddFeatureManagement();
+
 builder.Services.AddTelegramHttpClient();
 builder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>(provider =>
 {
