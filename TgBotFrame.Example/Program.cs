@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Telegram.Bot;
@@ -43,7 +43,7 @@ builder.Services.AddTelegramHttpClient();
 builder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>(provider =>
 {
     IHttpClientFactory factory = provider.GetRequiredService<IHttpClientFactory>();
-    return new(tgToken!, factory.CreateClient(nameof(ITelegramBotClient)));
+   return new(tgToken!, factory.CreateClient(nameof(ITelegramBotClient)));
 });
 
 builder.Services.AddDbContext<ExampleDataContext>(optionsBuilder =>
