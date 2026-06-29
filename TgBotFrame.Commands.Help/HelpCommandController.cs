@@ -62,11 +62,10 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             .Select(x => (x?.Assembly,
                 x?.GetCustomAttribute<CommandControllerAttribute>()?.CategoryKey))
             .GroupBy(x => x.CategoryKey, StringComparer.OrdinalIgnoreCase)
-            .Select(g =>
+            .Select(x =>
             {
-                string? categoryKey = g.Key;
                 string displayName;
-                if (string.IsNullOrEmpty(categoryKey))
+                if (string.IsNullOrEmpty(x.Key))
                 {
                     displayName = Resources.ResourceManager.GetString(
                         nameof(HelpCommandController_HelpList_WithoutCategory),
@@ -74,19 +73,18 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
                 }
                 else
                 {
-                    displayName = g
-                        .Select(x => GetResourceManager(x.Assembly)
-                            ?.GetString(CATEGORY_NAME_PREFIX + categoryKey, Context.GetCultureInfo()))
-                        .FirstOrDefault(x => x is not null)
-                        ?? categoryKey;
+                    displayName = x.Select(y => GetResourceManager(y.Assembly)
+                                          ?.GetString(CATEGORY_NAME_PREFIX + x.Key, Context.GetCultureInfo()))
+                                      .FirstOrDefault(y => !string.IsNullOrEmpty(y))
+                                  ?? x.Key;
                 }
 
-                return (displayName, categoryKey);
+                return (displayName, x.Key);
             }).OrderBy(x => x.displayName, StringComparer.Create(Context.GetCultureInfo(), true)).Select(x => new[]
             {
                 InlineKeyboardButton.WithCallbackData(
                     x.displayName,
-                    $@"/{nameof(HelpCategory)} {x.categoryKey}"),
+                    $@"/{nameof(HelpCategory)} {x.Key}"),
             });
 
 
