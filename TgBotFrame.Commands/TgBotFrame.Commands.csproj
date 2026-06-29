@@ -5,11 +5,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>TgBotFrame.Commands</Title>
 		<Authors>Aleksandr Erokhin</Authors>
 		<NeutralLanguage>ru</NeutralLanguage>
-		<Copyright>Copyright (C) 2024-2025 Aleksandr Erokhin</Copyright>
+		<Copyright>Copyright (C) 2024-2026 Aleksandr Erokhin</Copyright>
 		<PackageProjectUrl>https://github.com/MoryakSPb/TgBotFrame</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/MoryakSPb/TgBotFrame</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
