@@ -1,7 +1,7 @@
-﻿using System.Collections.Frozen;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Resources;
 using System.Text;
+using Microsoft.FeatureManagement;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -14,7 +14,10 @@ using static TgBotFrame.Commands.Help.Extensions.ResourcesExtensions;
 namespace TgBotFrame.Commands.Help;
 
 [CommandController(nameof(Help))]
-public class HelpCommandController(ITelegramBotClient botClient, CommandExplorerService commandExplorer)
+public class HelpCommandController(
+    ITelegramBotClient botClient,
+    CommandExplorerService commandExplorer,
+    IVariantFeatureManager? featureManager = null)
     : CommandControllerBase
 {
     [Command(nameof(Help))]
@@ -56,8 +59,9 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         text.AppendLine();
         text.AppendLine();
 
-        IEnumerable<InlineKeyboardButton[]> buttons = commandExplorer.Commands.Values
-            .SelectMany(x => x.Keys)
+
+        IAsyncEnumerable<InlineKeyboardButton[]> buttons = commandExplorer.GetCommands(featureManager)
+            .SelectMany(x => x.Value.Select(y => y.Key))
             .Select(x => x.DeclaringType)
             .Select(x => (x?.Assembly,
                 x?.GetCustomAttribute<CommandControllerAttribute>()?.CategoryKey))
@@ -92,7 +96,7 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             Context.GetUserId()!,
             Resources.ResourceManager.GetString(nameof(HelpCommandController_HelpList_Description),
                 Context.GetCultureInfo())!,
-            replyMarkup: new InlineKeyboardMarkup(buttons)
+            replyMarkup: new InlineKeyboardMarkup(await buttons.ToArrayAsync())
         ).ConfigureAwait(false);
     }
 
@@ -102,8 +106,8 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
     [Command(nameof(HelpCategory))]
     public async Task HelpCategory(string category)
     {
-        if (!commandExplorer.CategoriesCommandsNames.TryGetValue(category,
-                out (Assembly assembly, FrozenSet<string> commands) commands))
+        string[] commands = await commandExplorer.GetCategoryCommandsNames(featureManager, category).ToArrayAsync();
+        if (commands.Length == 0)
         {
             await botClient.SendMessage(
                 Context.GetUserId()!,
@@ -112,16 +116,22 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
             return;
         }
 
-        IEnumerable<InlineKeyboardButton[]> buttons = commands.commands.Select(x => new[]
+        IEnumerable<InlineKeyboardButton[]> buttons = commands.Select(x => new[]
             { InlineKeyboardButton.WithCallbackData(x, $@"/{nameof(HelpCommand)} {x}") });
 
-        string text = (category.Length == 0
-            ? Resources.ResourceManager.GetString(
+        string text;
+        if (category.Length == 0)
+        {
+            text = Resources.ResourceManager.GetString(
                 nameof(HelpCommandController_HelpCategory_NoCategory),
-                Context.GetCultureInfo())
-            : GetResourceManager(commands.assembly)?.GetString(
-                CATEGORY_DESCRIPTION_PREFIX + category,
-                Context.GetCultureInfo())) ?? category;
+                Context.GetCultureInfo()) ?? category;
+        }
+        else
+        {
+            text = commandExplorer.GetAssembliesForCategory(category).Select(x => GetResourceManager(x)
+                ?.GetString(CATEGORY_DESCRIPTION_PREFIX + category,
+                    Context.GetCultureInfo())).FirstOrDefault(x => !string.IsNullOrEmpty(x)) ?? category;
+        }
 
         await botClient.SendMessage(
             Context.GetUserId()!,
@@ -132,9 +142,9 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
     [Command(nameof(HelpCommand))]
     public async Task HelpCommand(string command)
     {
-        if (!commandExplorer.Commands.TryGetValue(command,
-                out FrozenDictionary<MethodInfo, ParameterInfo[]>? methods)
-            || methods.Count == 0)
+        Dictionary<MethodInfo, ParameterInfo[]> methods =
+            await commandExplorer.GetCommand(featureManager, command).ToDictionaryAsync();
+        if (methods.Count == 0)
         {
             await botClient.SendMessage(
                 Context.GetUserId()!,

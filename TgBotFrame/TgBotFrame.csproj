@@ -33,6 +33,7 @@
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" />
+		<PackageReference Include="Microsoft.FeatureManagement.AspNetCore" />
 		<PackageReference Include="Polly.Contrib.WaitAndRetry" />
 		<PackageReference Include="System.Threading.RateLimiting" />
 		<PackageReference Include="Telegram.Bot" />

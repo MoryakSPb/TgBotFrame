@@ -1,7 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.Mvc;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
@@ -59,7 +62,27 @@ public class BotService(
         frameMetricsService.IncUpdatesHandled(update.Type);
         AsyncServiceScope scope = scopeFactory.CreateAsyncScope();
         await using ConfiguredAsyncDisposable _ = scope.ConfigureAwait(false);
-        FrameMiddleware[] middlewares = scope.ServiceProvider.GetServices<FrameMiddleware>().ToArray();
+
+        IVariantFeatureManager? featureManager = scope.ServiceProvider.GetService<IVariantFeatureManager>();
+        FrameMiddleware[] middlewares;
+        if (featureManager is null)
+        {
+            middlewares = scope.ServiceProvider.GetServices<FrameMiddleware>().ToArray();
+        }
+        else
+        {
+            List<FrameMiddleware> frameMiddlewares = [];
+            foreach (FrameMiddleware frameMiddleware in scope.ServiceProvider.GetServices<FrameMiddleware>())
+            {
+                if (await IsFeatureEnabled(featureManager, frameMiddleware.GetType()))
+                {
+                    frameMiddlewares.Add(frameMiddleware);
+                }
+            }
+
+            middlewares = frameMiddlewares.ToArray();
+        }
+
         if (middlewares.Length == 0)
         {
             logger.LogWarning(@"There is no registered middlewares, skip update processing");
@@ -77,4 +100,53 @@ public class BotService(
         using FrameContext context = new();
         await firstMiddleware.InvokeAsync(update, context, cancellationToken).ConfigureAwait(false);
     }
+
+    private static async ValueTask<bool> IsFeatureEnabled(IVariantFeatureManager featureManager, Type type)
+    {
+        if (type.GetCustomAttribute<FeatureGateAttribute>() is not { } attribute)
+        {
+            return true;
+        }
+
+        return await IsFeatureEnabled(featureManager, attribute);
+    }
+
+    private static async ValueTask<bool> IsFeatureEnabled(IVariantFeatureManager? featureManager,
+        FeatureGateAttribute? attribute)
+    {
+        if (featureManager is null) return true;
+        switch (attribute?.RequirementType)
+        {
+            case RequirementType.Any:
+                foreach (string? feature in attribute.Features)
+                {
+                    bool result = await featureManager.IsEnabledAsync(feature);
+                    if (result)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            case RequirementType.All:
+                foreach (string? feature in attribute.Features)
+                {
+                    bool result = await featureManager.IsEnabledAsync(feature);
+                    if (!result)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case null:
+                return true;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    public static async Task<bool> IsFeatureEnabled(IVariantFeatureManager? featureManager, MethodInfo method) =>
+        await IsFeatureEnabled(featureManager, method.DeclaringType?.GetCustomAttribute<FeatureGateAttribute>())
+        && await IsFeatureEnabled(featureManager, method.GetCustomAttribute<FeatureGateAttribute>());
 }
