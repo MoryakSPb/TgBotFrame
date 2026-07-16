@@ -114,6 +114,7 @@ public class BotService(
     private static async ValueTask<bool> IsFeatureEnabled(IVariantFeatureManager? featureManager,
         FeatureGateAttribute? attribute)
     {
+        if (featureManager is null) return true;
         switch (attribute?.RequirementType)
         {
             case RequirementType.Any:
