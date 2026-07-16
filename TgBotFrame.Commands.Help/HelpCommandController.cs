@@ -59,34 +59,32 @@ public class HelpCommandController(ITelegramBotClient botClient, CommandExplorer
         IEnumerable<InlineKeyboardButton[]> buttons = commandExplorer.Commands.Values
             .SelectMany(x => x.Keys)
             .Select(x => x.DeclaringType)
-            .Select(x => (GetResourceManager(x?.Assembly),
+            .Select(x => (x?.Assembly,
                 x?.GetCustomAttribute<CommandControllerAttribute>()?.CategoryKey))
-            .Distinct()
+            .GroupBy(x => x.CategoryKey, StringComparer.OrdinalIgnoreCase)
             .Select(x =>
             {
                 string displayName;
-                if (string.IsNullOrEmpty(x.CategoryKey))
+                if (string.IsNullOrEmpty(x.Key))
                 {
                     displayName = Resources.ResourceManager.GetString(
                         nameof(HelpCommandController_HelpList_WithoutCategory),
                         Context.GetCultureInfo())!;
                 }
-                else if (x.Item1 is not null)
-                {
-                    displayName = x.Item1.GetString(CATEGORY_NAME_PREFIX + x.CategoryKey,
-                        Context.GetCultureInfo()) ?? x.CategoryKey;
-                }
                 else
                 {
-                    displayName = x.CategoryKey;
+                    displayName = x.Select(y => GetResourceManager(y.Assembly)
+                                          ?.GetString(CATEGORY_NAME_PREFIX + x.Key, Context.GetCultureInfo()))
+                                      .FirstOrDefault(y => !string.IsNullOrEmpty(y))
+                                  ?? x.Key;
                 }
 
-                return (x.Item1, x.CategoryKey, displayName);
+                return (displayName, x.Key);
             }).OrderBy(x => x.displayName, StringComparer.Create(Context.GetCultureInfo(), true)).Select(x => new[]
             {
                 InlineKeyboardButton.WithCallbackData(
                     x.displayName,
-                    $@"/{nameof(HelpCategory)} {x.CategoryKey}"),
+                    $@"/{nameof(HelpCategory)} {x.Key}"),
             });
 
 
