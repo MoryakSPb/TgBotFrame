@@ -8,7 +8,11 @@ namespace TgBotFrame.Example.Controllers;
 
 [ApiController]
 [Route("tg")]
-public class WebhookController(BotService botService, IOptions<TgBotOptions> options, ILogger<WebhookController> logger, IWebHostEnvironment webHostEnvironment) : ControllerBase
+public class WebhookController(
+    BotService botService,
+    IOptions<TgBotOptions> options,
+    ILogger<WebhookController> logger,
+    IWebHostEnvironment webHostEnvironment) : ControllerBase
 {
     [HttpGet]
     public ActionResult Get() => StatusCode(StatusCodes.Status405MethodNotAllowed);
@@ -43,14 +47,11 @@ public class WebhookController(BotService botService, IOptions<TgBotOptions> opt
                     e.Message,
                     e.GetType().Name);
             }
-            else
-            {
-                return Problem(
-                    "Error handling update",
-                    null,
-                    StatusCodes.Status500InternalServerError);
-            }
 
+            return Problem(
+                "Error handling update",
+                null,
+                StatusCodes.Status500InternalServerError);
         }
 
         return Ok();

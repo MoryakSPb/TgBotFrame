@@ -32,13 +32,6 @@ public class BotService(
         return RunMiddleware(update, cancellationToken);
     }
 
-    public Task HandleUpdateAsync(Update update,
-        CancellationToken cancellationToken)
-    {
-        logger.LogDebug(@"Update {id} received", update.Id);
-        return RunMiddleware(update, cancellationToken);
-    }
-
     public Task HandleErrorAsync(ITelegramBotClient _, Exception exception, HandleErrorSource source,
         CancellationToken cancellationToken)
     {
@@ -60,6 +53,13 @@ public class BotService(
         return Task.CompletedTask;
     }
 
+    public Task HandleUpdateAsync(Update update,
+        CancellationToken cancellationToken)
+    {
+        logger.LogDebug(@"Update {id} received", update.Id);
+        return RunMiddleware(update, cancellationToken);
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         switch (options.Value.BotMode)
@@ -68,7 +68,9 @@ public class BotService(
                 await botClient.ReceiveAsync(this, new()
                 {
                     DropPendingUpdates = false,
-                    AllowedUpdates = (options.Value.AllowedUpdates?.Length ?? 0) == 0 ? Enum.GetValues<UpdateType>() : options.Value.AllowedUpdates,
+                    AllowedUpdates = (options.Value.AllowedUpdates?.Length ?? 0) == 0
+                        ? Enum.GetValues<UpdateType>()
+                        : options.Value.AllowedUpdates,
                 }, stoppingToken).ConfigureAwait(false);
                 return;
             case BotMode.Webhook when options.Value.WebhookUrl is not null:
@@ -79,7 +81,9 @@ public class BotService(
                         null,
                         null,
                         options.Value.WebhookMaxConnections,
-                        (options.Value.AllowedUpdates?.Length ?? 0) == 0 ? Enum.GetValues<UpdateType>() : options.Value.AllowedUpdates,
+                        (options.Value.AllowedUpdates?.Length ?? 0) == 0
+                            ? Enum.GetValues<UpdateType>()
+                            : options.Value.AllowedUpdates,
                         false,
                         options.Value.WebhookSecretToken,
                         CancellationToken.None).ConfigureAwait(false);
@@ -89,13 +93,13 @@ public class BotService(
                 {
                     await botClient.DeleteWebhook(false, CancellationToken.None).ConfigureAwait(false);
                 }
+
                 return;
             case BotMode.Webhook:
                 throw new ArgumentNullException(nameof(options.Value.WebhookUrl));
             default:
                 throw new ArgumentOutOfRangeException(nameof(options));
         }
-
     }
 
     private async Task RunMiddleware(Update update, CancellationToken cancellationToken = default)
@@ -155,7 +159,11 @@ public class BotService(
     private static async ValueTask<bool> IsFeatureEnabled(IVariantFeatureManager? featureManager,
         FeatureGateAttribute? attribute)
     {
-        if (featureManager is null) return true;
+        if (featureManager is null)
+        {
+            return true;
+        }
+
         switch (attribute?.RequirementType)
         {
             case RequirementType.Any:
