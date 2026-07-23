@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.FeatureManagement;
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using TgBotFrame.Commands.Attributes;
 using TgBotFrame.Services;
 
@@ -9,12 +9,15 @@ namespace TgBotFrame.Commands.Services;
 
 public sealed class CommandExplorerService(ILogger<CommandExplorerService> logger)
 {
+    private FrozenDictionary<string, (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies)>
+        CATEGORIES =
+            FrozenDictionary<string, (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies)>.Empty;
+
     private FrozenDictionary<string, FrozenDictionary<MethodInfo, ParameterInfo[]>> COMMANDS =
         FrozenDictionary<string, FrozenDictionary<MethodInfo, ParameterInfo[]>>.Empty;
-    private FrozenDictionary<string, (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies)> CATEGORIES =
-        FrozenDictionary<string, (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies)>.Empty;
 
-    public async IAsyncEnumerable<KeyValuePair<MethodInfo, ParameterInfo[]>> GetCommand(IVariantFeatureManager? featureManager, string commandName)
+    public async IAsyncEnumerable<KeyValuePair<MethodInfo, ParameterInfo[]>> GetCommand(
+        IVariantFeatureManager? featureManager, string commandName)
     {
         if (!COMMANDS.TryGetValue(commandName, out FrozenDictionary<MethodInfo, ParameterInfo[]>? commands))
         {
@@ -33,12 +36,15 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
             foreach (KeyValuePair<MethodInfo, ParameterInfo[]> method in commands)
             {
                 if (await BotService.IsFeatureEnabled(featureManager, method.Key).ConfigureAwait(false))
+                {
                     yield return method;
+                }
             }
         }
     }
 
-    public async IAsyncEnumerable<KeyValuePair<string, IAsyncEnumerable<KeyValuePair<MethodInfo, ParameterInfo[]>>>> GetCommands(IVariantFeatureManager? featureManager)
+    public async IAsyncEnumerable<KeyValuePair<string, IAsyncEnumerable<KeyValuePair<MethodInfo, ParameterInfo[]>>>>
+        GetCommands(IVariantFeatureManager? featureManager)
     {
         foreach (KeyValuePair<string, FrozenDictionary<MethodInfo, ParameterInfo[]>> commandName in COMMANDS)
         {
@@ -47,15 +53,19 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
     }
 
 
-
     public IReadOnlyCollection<Assembly> GetAssembliesForCategory(in string category)
     {
-        return CATEGORIES.TryGetValue(category, out (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies) value) ? value.assemblies : [];
+        return CATEGORIES.TryGetValue(category,
+            out (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies) value)
+            ? value.assemblies
+            : [];
     }
 
-    public async IAsyncEnumerable<string> GetCategoryCommandsNames(IVariantFeatureManager? featureManager, string category)
+    public async IAsyncEnumerable<string> GetCategoryCommandsNames(IVariantFeatureManager? featureManager,
+        string category)
     {
-        if (!CATEGORIES.TryGetValue(category, out (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies) methods))
+        if (!CATEGORIES.TryGetValue(category,
+                out (FrozenDictionary<string, MethodInfo[]> methods, Assembly[] assemblies) methods))
         {
             yield break;
         }
@@ -88,12 +98,17 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
             {
                 continue;
             }
+
             Assembly assembly = type.Assembly;
 
 
-            if (categories.TryGetValue(controllerAttribute.CategoryKey, out (Dictionary<string, List<MethodInfo>> methods, List<Assembly> assemblies) categoryInfo))
+            if (categories.TryGetValue(controllerAttribute.CategoryKey,
+                    out (Dictionary<string, List<MethodInfo>> methods, List<Assembly> assemblies) categoryInfo))
             {
-                if (!categoryInfo.assemblies.Contains(assembly)) categoryInfo.assemblies.Add(assembly);
+                if (!categoryInfo.assemblies.Contains(assembly))
+                {
+                    categoryInfo.assemblies.Add(assembly);
+                }
             }
             else
             {
@@ -116,11 +131,13 @@ public sealed class CommandExplorerService(ILogger<CommandExplorerService> logge
 
                 if (!commands.TryAdd(attribute.Name, [methodInfo]))
                 {
-                    var overloads = commands[attribute.Name];
-                    if (!overloads.Contains(methodInfo)) overloads.Add(methodInfo);
+                    List<MethodInfo> overloads = commands[attribute.Name];
+                    if (!overloads.Contains(methodInfo))
+                    {
+                        overloads.Add(methodInfo);
+                    }
                 }
             }
-
         }
 
         COMMANDS = commands.ToFrozenDictionary(
