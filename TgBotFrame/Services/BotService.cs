@@ -3,12 +3,14 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.Mvc;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using TgBotFrame.Middleware;
+using TgBotFrame.Options;
 
 namespace TgBotFrame.Services;
 
@@ -19,14 +21,22 @@ namespace TgBotFrame.Services;
 public class BotService(
     ITelegramBotClient botClient,
     ILogger<BotService> logger,
+    IOptions<TgBotOptions> options,
     IServiceScopeFactory scopeFactory,
     FrameMetricsService frameMetricsService) : BackgroundService, IUpdateHandler
 {
-    public async Task HandleUpdateAsync(ITelegramBotClient _, Update update,
+    public Task HandleUpdateAsync(ITelegramBotClient _, Update update,
         CancellationToken cancellationToken)
     {
         logger.LogDebug(@"Update {id} received", update.Id);
-        await RunMiddleware(update, cancellationToken).ConfigureAwait(false);
+        return RunMiddleware(update, cancellationToken);
+    }
+
+    public Task HandleUpdateAsync(Update update,
+        CancellationToken cancellationToken)
+    {
+        logger.LogDebug(@"Update {id} received", update.Id);
+        return RunMiddleware(update, cancellationToken);
     }
 
     public Task HandleErrorAsync(ITelegramBotClient _, Exception exception, HandleErrorSource source,
@@ -50,12 +60,43 @@ public class BotService(
         return Task.CompletedTask;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) =>
-        await botClient.ReceiveAsync(this, new()
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        switch (options.Value.BotMode)
         {
-            DropPendingUpdates = false,
-            AllowedUpdates = Enum.GetValues<UpdateType>(),
-        }, stoppingToken).ConfigureAwait(false);
+            case BotMode.Polling:
+                await botClient.ReceiveAsync(this, new()
+                {
+                    DropPendingUpdates = false,
+                    AllowedUpdates = (options.Value.AllowedUpdates?.Length ?? 0) == 0 ? Enum.GetValues<UpdateType>() : options.Value.AllowedUpdates,
+                }, stoppingToken).ConfigureAwait(false);
+                return;
+            case BotMode.Webhook when options.Value.WebhookUrl is not null:
+                try
+                {
+                    await botClient.SetWebhook(
+                        options.Value.WebhookUrl,
+                        null,
+                        null,
+                        options.Value.WebhookMaxConnections,
+                        (options.Value.AllowedUpdates?.Length ?? 0) == 0 ? Enum.GetValues<UpdateType>() : options.Value.AllowedUpdates,
+                        false,
+                        options.Value.WebhookSecretToken,
+                        CancellationToken.None).ConfigureAwait(false);
+                    await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken).ConfigureAwait(false);
+                }
+                finally
+                {
+                    await botClient.DeleteWebhook(false, CancellationToken.None).ConfigureAwait(false);
+                }
+                return;
+            case BotMode.Webhook:
+                throw new ArgumentNullException(nameof(options.Value.WebhookUrl));
+            default:
+                throw new ArgumentOutOfRangeException(nameof(options));
+        }
+
+    }
 
     private async Task RunMiddleware(Update update, CancellationToken cancellationToken = default)
     {

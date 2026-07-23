@@ -12,9 +12,10 @@ using TgBotFrame.Commands.RateLimit.Options;
 using TgBotFrame.Commands.Start;
 using TgBotFrame.Example;
 using TgBotFrame.Injection;
+using TgBotFrame.Options;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
+builder.Services.Configure<TgBotOptions>(builder.Configuration.GetSection("TgBotOptions"));
 builder.Services.AddOpenTelemetry().WithMetrics(providerBuilder =>
 {
     providerBuilder.AddPrometheusExporter();
@@ -46,7 +47,7 @@ builder.Services.AddTelegramHttpClient();
 builder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>(provider =>
 {
     IHttpClientFactory factory = provider.GetRequiredService<IHttpClientFactory>();
-    return new(tgToken!, factory.CreateClient(nameof(ITelegramBotClient)));
+    return new(tgToken!, factory.CreateClient(nameof(ITelegramBotClient))); 
 });
 
 builder.Services.AddDbContext<ExampleDataContext>(optionsBuilder =>
@@ -66,6 +67,8 @@ builder.Services.AddTgBotFrameCommands(commandsBuilder =>
     commandsBuilder.TryAddControllers(Assembly.GetEntryAssembly()!);
 });
 
+builder.Services.AddControllers();
+
 builder.Services.AddHealthChecks()
     .AddUrlGroup(new Uri("https://api.telegram.org/"), HttpMethod.Head)
     .AddSqlite(sqliteConnectionString);
@@ -83,5 +86,5 @@ await using (scope.ConfigureAwait(false))
 
 app.MapPrometheusScrapingEndpoint();
 app.UseHealthChecks("/health");
-
+app.MapControllers();
 await app.RunAsync().ConfigureAwait(false);
