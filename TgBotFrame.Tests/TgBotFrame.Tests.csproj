@@ -7,6 +7,7 @@
 
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<EnableMicrosoftTestingPlatform>true</EnableMicrosoftTestingPlatform>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,10 +17,6 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="xunit.runner.visualstudio">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="xunit.v3" />
 	</ItemGroup>
 
